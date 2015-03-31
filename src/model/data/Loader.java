@@ -10,12 +10,40 @@ import datareader.CSVReader;
 public class Loader {
 
 	public static void Load() throws IOException {
+		List<Season> regularSeason = null;
+		List<SeasonDetail> seasonDetail = null;
+		List<Team> teams = null;
+		List<Result> results = null;
+
 		// parse season
-		FileInputStream fis = new FileInputStream(new File("data"
-				+ File.separator + "regular_season_results.csv"));
-		List<Season> regularSeason = CSVReader.parse(fis, Season.class);
-		//System.out.println("Num season entries "+regularSeason.size());
-		fis.close();
+		{
+			FileInputStream fis = new FileInputStream(new File("data"
+					+ File.separator + "regular_season_results.csv"));
+			regularSeason = CSVReader.parse(fis, Season.class);
+			fis.close();
+		}
+		{
+			// parse season details
+			FileInputStream fis = new FileInputStream(new File("data"
+					+ File.separator + "seasons.csv"));
+			seasonDetail = CSVReader.parse(fis, SeasonDetail.class);
+			fis.close();
+		}
+		{
+			// parse teams
+			FileInputStream fis = new FileInputStream(new File("data"
+					+ File.separator + "teams.csv"));
+			teams = CSVReader.parse(fis, Team.class);
+			fis.close();
+		}
+		{
+			// parse tournament results
+			FileInputStream fis = new FileInputStream(new File("data"
+					+ File.separator + "tourney_results.csv"));
+			results = CSVReader.parse(fis, Result.class);
+			fis.close();
+		}
+
 	}
 
 }
