@@ -9,13 +9,14 @@ import datareader.CSVReader;
 
 public class Loader {
 
+	public static List<Season> regularSeason = null;
+	public static List<SeasonDetail> seasonDetail = null;
+	public static List<Team> teams = null;
+	public static List<Result> results = null;
+	public static List<TourneySlot> slots = null;
+	public static List<TourneySeed> seeds = null;
+
 	public static void Load() throws IOException {
-		List<Season> regularSeason = null;
-		List<SeasonDetail> seasonDetail = null;
-		List<Team> teams = null;
-		List<Result> results = null;
-		List<TourneySlot> slots = null;
-		List<TourneySeed> seeds = null;
 		// parse season
 		{
 			FileInputStream fis = new FileInputStream(new File("data"
