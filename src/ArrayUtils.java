@@ -1,6 +1,107 @@
+/**
+ * Class ArrayUtils provides static methods for printing and
+ * manipulating arrays of any type.
+ *
+ * The way of implementing the methods for primitive types is
+ * still in development. A way to automatically generate equivalent
+ * methods for primitive types is being developed.
+ *
+ * Methods for lists will be considered, but for now, use
+ * listName.toArray() to go from a list to an array, then, if the
+ * method has a return value, put it in Arrays.toList(...)
+ * to convert the array back to the list of the desired type
+ * (does not work for primitives).
+ *
+ * @author Ryan Conrad
+ */
 public class ArrayUtils
 {
-    private ArrayUtils(){}
+    private ArrayUtils(){} // Prevent instantiation
+    
+    /**
+     * Method that returns a subarray based on the start and end indices.
+     * 0 to array.length-1 are the standard indices of the array, and
+     * -1 to -array.length represent the number of elements away from
+     * the first out-of-bounds position beyond the last element.
+     *
+     * This method returns the elements forward if end > start, or returns
+     * the elements backwards if start > end.
+     *
+     * Start is inclusive: end is not.
+     *
+     * ex. subarray(arr, 1, -2) will have elements 1, 0,
+     * and arr.length-1 in an array of length 4, in that order.
+     *
+     * @param array The array
+     * @param start The start
+     * @param end The end
+     * @return A subarray of array (null if bad values)
+     */
+    public static <T> T[] subarray(T[] array, int start, int end)
+    {
+        // invalid input
+        if(start < -array.length || end < -array.length
+            || start >= array.length || end >= array.length)
+        {
+            return null;
+        }
+        
+        int dir = 0;        // Direction to scan array
+        int numElems = 0;   // Number of elements in new array
+        
+        // If start = end, there's nothing to scan.
+        if(start == end)
+        {
+            return newArray(array, 0);
+        }
+        else if(start < end)
+        {
+            numElems = end-start;
+            dir = 1;
+        }
+        else
+        {
+            numElems = start-end;
+            dir = -1;
+        }
+        
+        T[] newArr = newArray(array, numElems);
+        
+        if(dir == 1)
+        {
+            for(int i = start; i < end; ++i)
+            {
+                if(i < 0)
+                {
+                    newArr[i-start] = array[i+array.length];
+                }
+                else newArr[i-start] = array[i];
+            }
+        }
+        else //if(dir == -1)
+        {
+            int j = 0;
+            for(int i = start; i > end; --i)
+            {
+                if(i < 0)
+                {
+                    newArr[j] = array[i+array.length];
+                }
+                else newArr[j] = array[i];
+                ++j;
+            }
+        }
+        return newArr;
+    }
+    
+    /**
+     * Method to transpose a 2D array of any non-primitive type.
+     * The method does not overwrite the passed in array, but instead
+     * returns a transposed array.
+     *
+     * @param array The array to transpose
+     * @return The transposed array
+     */
     public static <T> T[][] transpose(T[][] array)
     {
         T[][] transpose = 
@@ -15,6 +116,12 @@ public class ArrayUtils
         return transpose;
     }
     
+    /**
+     * Generates a new 1D array of any non-primitve type.
+     *
+     * @param arr The array of the desired type for the new array
+     * @param d The number of elements in the new array.
+     */
     @SuppressWarnings("unchecked")
     public static <T> T[] newArray(T[] arr, int d)
     {
@@ -23,6 +130,13 @@ public class ArrayUtils
             tClass, d);
     }
     
+    /**
+     * Generates a new 2D array of any non-primitve type.
+     *
+     * @param arr The array of the desired type for the new array
+     * @param d1 1st dimension size.
+     * @param d2 2nd dimension size.
+     */
     @SuppressWarnings("unchecked")
     public static <T> T[][] newArray(T[][] arr, int d1, int d2)
     {
@@ -36,16 +150,32 @@ public class ArrayUtils
         return arr2D;
     }
     
+    /**
+     * Change the size of an array.
+     * The method does not overwrite the passed in array, but instead
+     * returns an array of modified size.
+     *
+     * @param arr The array of the desired type for the new array
+     * @param delta The number of elements to add or subtract from
+     *          the old array
+     * @param justification
+     *          <0: The new array starts with the first element of
+     *              the old array (left justified)
+     *          =0: There is an equal distance (rounded to the left)
+     *              between the beginning of the old and new array
+     *              and the end of the old and new array (respectively)
+     *              (center justified)
+     *          >0: The new array ends with the last element of
+     *              the old array (right justified)
+     * @return A new array of modified size
+     */
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable<T>> T[] changeSize(
+    public static <T> T[] changeSize(
         T[] arr, int delta, int justification)
     {
-        Class<T> tClass = (Class<T>)arr[0].getClass();
         if(delta >= arr.length || delta == 0)
         {
-            T[] newArr = 
-                (T[])java.lang.reflect.Array.newInstance(
-                tClass, arr.length);
+            T[] newArr = newArray(arr, arr.length);
             for(int i = 0; i < newArr.length; ++i)
             {
                 newArr[i] = arr[i];
@@ -53,12 +183,12 @@ public class ArrayUtils
             return newArr;
         }
         
-        T[] newArr = 
-                (T[])java.lang.reflect.Array.newInstance(
-                tClass, arr.length+delta);
+        T[] newArr = newArray(arr, arr.length+delta);
         
+        // push old elements to the left
         if(justification < 0)
         {
+            // new array is smaller
             if(delta < 0)
             {
                 for(int i = 0; i < newArr.length; ++i)
@@ -66,6 +196,7 @@ public class ArrayUtils
                     newArr[i] = arr[i];
                 }
             }
+            // new array is larger
             else
             {
                 for(int i = 0; i < arr.length; ++i)
@@ -78,9 +209,13 @@ public class ArrayUtils
                 }
             }
         }
+        
+        // position old elements in the center
         else if(justification == 0)
         {
+            // center (elements are left by 1 on a tiebreaker)
             int center = (newArr.length-arr.length)/2;
+            // new array is smaller
             if(delta < 0)
             {
                 for(int i = 0; i < newArr.length; ++i)
@@ -88,6 +223,7 @@ public class ArrayUtils
                     newArr[i] = arr[i-center];
                 }
             }
+            // new array is larger
             else
             {
                 for(int i = 0; i < center; ++i)
@@ -104,8 +240,11 @@ public class ArrayUtils
                 }
             }
         }
+        
+        // push old elements to the right
         else // if(justification > 0)
         {
+            // new array is smaller
             if(delta < 0)
             {
                 for(int i = 0; i < newArr.length; ++i)
@@ -113,6 +252,7 @@ public class ArrayUtils
                     newArr[i] = arr[i-delta];
                 }
             }
+            // new array is larger
             else
             {
                 for(int i = 0; i < delta; ++i)
@@ -143,9 +283,9 @@ public class ArrayUtils
     }
     
     /**
-     * Method that zeros out an array of type byte
+     * Method that zeros out an array of any non-primitive type
      *
-     * @param array The byte array
+     * @param array The array
      */
     public static <T> void zero(T[] array)
     {
@@ -156,23 +296,35 @@ public class ArrayUtils
     }
     
     /**
-     * Prints an array of objects
+     * Prints an array of objects in one line
      *
      * @param array The array of objects
      */
     public static <T> void printArrayInline(T[] array)
     {
-        for(int i = 0; i < array.length-1; ++i)
+        if(array == null)
         {
-            System.out.print(array[i] + ", ");
+            System.out.println("null");
         }
-        System.out.println(array[array.length-1]);
+        else if(array.length == 0)
+        {
+            System.out.println();
+        }
+        else
+        {
+            for(int i = 0; i < array.length-1; ++i)
+            {
+                System.out.print(array[i] + ", ");
+            }
+            System.out.println(array[array.length-1]);
+        }
     }
     
     /**
-     * Prints an array of objects
+     * Prints an array of objects in one line
      *
      * @param array The array of objects
+     * @param label The label
      */
     public static <T> void printArrayInline(T[] array, String label)
     {
@@ -212,6 +364,11 @@ public class ArrayUtils
         }
     }
     
+    /** 
+     * Prints a 2D array of objects
+     *
+     * @param array The array
+     */
     public static <T> void print2DArrayF(T[][] array)
     {
         int[] maxLens = new int[array.length];
@@ -245,45 +402,14 @@ public class ArrayUtils
         }
     }
     
-    public static void print2DArrayF(String[][] array)
-    {
-        int[] maxLens = new int[array.length];
-        zero(maxLens);
-        for(int i = 0; i < array[0].length; ++i)
-        {
-            for(int j = 0; j < array.length; ++j)
-            {
-                if(array[j][i].length() > maxLens[j])
-                {
-                    maxLens[j] = array[j][i].length();
-                }
-            }
-        }
-        
-        String spacer = "";
-        
-        for(int i = 0; i < array[0].length; ++i)
-        {
-            for(int j = 0; j < array.length; ++j)
-            {
-                for(int k = 0; k < (maxLens[j]-array[j][i].length()+1); ++k)
-                {
-                    spacer += " ";
-                }
-                System.out.print(array[j][i] + spacer);
-                spacer = "";
-            }
-            System.out.println();
-        }
-    }
-    
-    
-    
-    
-    
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
     /*
      * Primitive versions of methods above, as well as some
-     * methods dealing with numbers and wrapper classes
+     * methods dealing with numbers and wrapper classes, are here.
+     * Much of this has been automatically generated.
      */
     
     public static int[] changeSize(int[] arr, int delta, int justification)
@@ -584,6 +710,14 @@ public class ArrayUtils
         for(int i = 0; i < array.length; ++i)
         {
             array[i] = 0;
+        }
+    }
+    
+    public static void initIncr(Integer[] array)
+    {
+        for(int i = 0; i < array.length; ++i)
+        {
+            array[i] = i;
         }
     }
     
