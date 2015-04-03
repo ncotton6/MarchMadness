@@ -12,7 +12,7 @@ public class Bracket {
 	private Node winner = null;
 
 	/**
-	 * This
+	 * This method will build up the bracket from the base level.
 	 * 
 	 * @param midwest
 	 *            should be of length 16 of the teams in the midwest
@@ -21,7 +21,7 @@ public class Bracket {
 	 * @param east
 	 *            should be of length 16 of the teams in the east
 	 * @param south
-	 *            should be of lenght 16 of the teams in the south
+	 *            should be of length 16 of the teams in the south
 	 */
 	public Bracket(int[] midwest, int[] west, int[] east, int[] south) {
 		if (midwest.length != 16 && west.length != 16 && east.length != 16
@@ -32,6 +32,28 @@ public class Bracket {
 		Node[] westNodes = generateBase(west);
 		Node[] eastNodes = generateBase(east);
 		Node[] southNodes = generateBase(south);
+		Node[] heads = new Node[4];
+		heads[0] = build(midwestNodes);
+		heads[3] = build(westNodes);
+		heads[1] = build(eastNodes);
+		heads[2] = build(southNodes);
+		winner = build(heads);
+
+	}
+
+	private Node build(Node[] nodes) {
+		while (nodes.length > 1) {
+			Node[] uplevel = new Node[nodes.length / 2];
+			for (int i = 0; i < uplevel.length; ++i) {
+				uplevel[i] = new Node(new Game());
+				uplevel[i].getChildren()[0] = nodes[i];
+				uplevel[i].getChildren()[1] = nodes[nodes.length-i];				
+			}
+			nodes = uplevel;
+			if(nodes.length == 1)
+				return nodes[0];
+		}
+		return null;
 	}
 
 	/**
@@ -46,8 +68,8 @@ public class Bracket {
 		Node[] games = new Node[8];
 		for (int i = 0; i < games.length; ++i) {
 			Game game = new Game();
-			game.setA(Link.lookupTeam(1));
-			game.setB(Link.lookupTeam(1));
+			game.setA(Link.lookupTeam(teams[i]));
+			game.setB(Link.lookupTeam(teams[16 - i]));
 			Node n = new Node(game);
 			games[i] = n;
 		}
