@@ -41,19 +41,50 @@ public class Bracket {
 
 	}
 
+	/**
+	 * Connects nodes together, and builds up the bracket from the bottom.
+	 * 
+	 * @param nodes
+	 * @return
+	 */
 	private Node build(Node[] nodes) {
 		while (nodes.length > 1) {
 			Node[] uplevel = new Node[nodes.length / 2];
 			for (int i = 0; i < uplevel.length; ++i) {
 				uplevel[i] = new Node(new Game());
 				uplevel[i].getChildren()[0] = nodes[i];
-				uplevel[i].getChildren()[1] = nodes[nodes.length-i];				
+				uplevel[i].getChildren()[1] = nodes[nodes.length - i];
 			}
 			nodes = uplevel;
-			if(nodes.length == 1)
+			if (nodes.length == 1)
 				return nodes[0];
 		}
 		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		return sb.toString();
+	}
+
+	/**
+	 * @return the winner
+	 */
+	public Node getWinner() {
+		return winner;
+	}
+
+	/**
+	 * @param winner
+	 *            the winner to set
+	 */
+	public void setWinner(Node winner) {
+		this.winner = winner;
 	}
 
 	/**
