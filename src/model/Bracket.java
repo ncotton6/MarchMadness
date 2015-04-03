@@ -1,5 +1,7 @@
 package model;
 
+import model.data.Team;
+
 /**
  * The {@link Bracket} class will be used to hold the structure of the games,
  * and teams progression throughout the tournament.
@@ -108,6 +110,41 @@ public class Bracket {
 	}
 
 	/**
+	 * Given a {@link GameSimulator} the games will be predicted all the way up
+	 * to the winner.
+	 * 
+	 * @param gameSimulator
+	 */
+	public void solve(GameSimulator gameSimulator) {
+		solveHelper(winner, gameSimulator);
+	}
+
+	/**
+	 * Recursive function to run a simulation of the games from the ground up.
+	 * 
+	 * @param node
+	 * @param gameSimulator
+	 */
+	private void solveHelper(Node node, GameSimulator gameSimulator) {
+		if (node.getChildren()[0] == null && node.getChildren()[1] == null) {
+			Tuple<Double, Double> result = gameSimulator.simulate(
+					node.getGame(), 0);
+			node.getGame().setAScore(result.v1);
+			node.getGame().setBScore(result.v2);
+		} else {
+			solveHelper(node.getChildren()[0], gameSimulator);
+			solveHelper(node.getChildren()[1], gameSimulator);
+			Game game = new Game();
+			game.setA(node.getChildren()[0].getWinner());
+			game.setB(node.getChildren()[1].getWinner());
+			node.setGame(game);
+			Tuple<Double, Double> result = gameSimulator.simulate(game, 0);
+			game.setAScore(result.v1);
+			game.setBScore(result.v2);
+		}
+	}
+
+	/**
 	 * This simply class will be used to hold data for progression through the
 	 * tournament.
 	 * 
@@ -121,6 +158,16 @@ public class Bracket {
 
 		public Node(Game game) {
 			this.game = game;
+		}
+
+		/**
+		 * Gets the winner of the game
+		 * 
+		 * @return
+		 */
+		public Team getWinner() {
+			return game.getAScore() > game.getBScore() ? game.getA() : game
+					.getB();
 		}
 
 		/**
