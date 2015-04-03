@@ -7,6 +7,13 @@ import java.util.List;
 
 import datareader.CSVReader;
 
+/**
+ * This class will load the data from the CSV files into memory, and give the
+ * application access to the data.
+ * 
+ * @author Nathaniel Cotton
+ * 
+ */
 public class Loader {
 
 	public static List<Season> regularSeason = null;
