@@ -5,6 +5,8 @@ import model.data.Team;
 
 public class Link {
 
+	private static int id = 100000;
+	
 	public static Team lookupTeam(int i) {
 		for (Team t : Loader.teams) {
 			if (t.getId() == i)
@@ -17,9 +19,6 @@ public class Link {
 		int[] teams = new int[teamNames.length];
 		for (int i = 0; i < teamNames.length; ++i) {
 			int team = lookupTeam(teamNames[i]);
-			if(team == -999){
-				System.out.println(teamNames[i] + " wasn't found");
-			}
 			teams[i] = team;
 		}
 		return teams;
@@ -30,7 +29,12 @@ public class Link {
 			if (t.getName().equalsIgnoreCase(string))
 				return t.getId();
 		}
-		return -999;
+		System.out.println(string + " wasn't found team, team being created");
+		Team t = new Team();
+		t.setId(id++);
+		t.setName(string);
+		Loader.teams.add(t);
+		return t.getId();
 	}
 
 }

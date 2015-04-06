@@ -3,6 +3,7 @@ import java.io.IOException;
 import model.Bracket;
 import model.Link;
 import model.data.Loader;
+import model.sim.RandomSim;
 
 public class Madness {
 
@@ -37,6 +38,10 @@ public class Madness {
 		int[] south = Link.lookupTeams(southString);
 
 		Bracket currentSeason = new Bracket(midwest, west, east, south);
+
+		System.out.println();
+		currentSeason.solve(new RandomSim(100000));
+		System.out.println(currentSeason.getWinner().getWinner().getName());
 	}
 
 }
