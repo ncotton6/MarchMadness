@@ -1,3 +1,4 @@
+package util;
 /**
  * Class ArrayUtils provides static methods for printing and
  * manipulating arrays of any type.
