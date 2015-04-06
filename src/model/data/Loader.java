@@ -20,7 +20,6 @@ public class Loader {
 	public static List<SeasonDetail> seasonDetail = null;
 	public static List<Team> teams = null;
 	public static List<Result> results = null;
-	public static List<TourneySlot> slots = null;
 	public static List<TourneySeed> seeds = null;
 	public static List<TeamStat> teamStat = null;
 
@@ -58,13 +57,6 @@ public class Loader {
 			FileInputStream fis = new FileInputStream(new File("data"
 					+ File.separator + "tourney_seeds.csv"));
 			seeds = CSVReader.parse(fis, TourneySeed.class);
-			fis.close();
-		}
-		{
-			// parse tournament slots
-			FileInputStream fis = new FileInputStream(new File("data"
-					+ File.separator + "tourney_slots.csv"));
-			slots = CSVReader.parse(fis, TourneySlot.class);
 			fis.close();
 		}
 
