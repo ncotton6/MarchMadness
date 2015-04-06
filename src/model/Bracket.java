@@ -55,7 +55,7 @@ public class Bracket {
 			for (int i = 0; i < uplevel.length; ++i) {
 				uplevel[i] = new Node(new Game());
 				uplevel[i].getChildren()[0] = nodes[i];
-				uplevel[i].getChildren()[1] = nodes[nodes.length - i];
+				uplevel[i].getChildren()[1] = nodes[nodes.length - i - 1];
 			}
 			nodes = uplevel;
 			if (nodes.length == 1)
@@ -102,7 +102,7 @@ public class Bracket {
 		for (int i = 0; i < games.length; ++i) {
 			Game game = new Game();
 			game.setA(Link.lookupTeam(teams[i]));
-			game.setB(Link.lookupTeam(teams[16 - i]));
+			game.setB(Link.lookupTeam(teams[16 - i - 1]));
 			Node n = new Node(game);
 			games[i] = n;
 		}
