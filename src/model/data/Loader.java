@@ -22,6 +22,7 @@ public class Loader {
 	public static List<Result> results = null;
 	public static List<TourneySlot> slots = null;
 	public static List<TourneySeed> seeds = null;
+	public static List<TeamStat> teamStat = null;
 
 	public static void Load() throws IOException {
 		// parse season
