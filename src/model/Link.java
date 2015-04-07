@@ -6,6 +6,7 @@ import java.util.List;
 import model.data.Loader;
 import model.data.Result;
 import model.data.Team;
+import model.data.TourneySeed;
 
 /**
  * {@link Link} is class the when provided primary key like attributes from a
@@ -79,10 +80,17 @@ public class Link {
 	public static List<Result> results(String season) {
 		List<Result> tourneyResults = new ArrayList<Result>();
 		for (Result r : Loader.results) {
-			if(season.equalsIgnoreCase(r.getSeason()))
+			if (season.equalsIgnoreCase(r.getSeason()))
 				tourneyResults.add(r);
 		}
 		return tourneyResults;
 	}
 
+	public static int[][] getBracketSeeding(String season) {
+		int[][] seeding = new int[4][16];
+		for (TourneySeed ts : Loader.seeds) {
+			seeding[ts.getRegion()][ts.getSeed()-1] = ts.getTeam();
+		}
+		return seeding;
+	}
 }

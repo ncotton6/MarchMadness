@@ -154,6 +154,12 @@ public class Bracket {
 		}
 	}
 
+	public static Bracket season(String season) {
+		int[][] bracketSeeding = Link.getBracketSeeding(season);
+		return new Bracket(bracketSeeding[0], bracketSeeding[1],
+				bracketSeeding[2], bracketSeeding[3]);
+	}
+
 	/**
 	 * This simply class will be used to hold data for progression through the
 	 * tournament.
