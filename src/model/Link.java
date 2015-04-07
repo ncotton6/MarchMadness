@@ -89,7 +89,8 @@ public class Link {
 	public static int[][] getBracketSeeding(String season) {
 		int[][] seeding = new int[4][16];
 		for (TourneySeed ts : Loader.seeds) {
-			seeding[ts.getRegion()][ts.getSeed()-1] = ts.getTeam();
+			if (ts.getSeason().equalsIgnoreCase(season))
+				seeding[ts.getRegion()][ts.getSeed() - 1] = ts.getTeam();
 		}
 		return seeding;
 	}
