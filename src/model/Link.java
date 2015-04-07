@@ -1,6 +1,10 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.data.Loader;
+import model.data.Result;
 import model.data.Team;
 
 /**
@@ -70,6 +74,15 @@ public class Link {
 		t.setName(string);
 		Loader.teams.add(t);
 		return t.getId();
+	}
+
+	public static List<Result> results(String season) {
+		List<Result> tourneyResults = new ArrayList<Result>();
+		for (Result r : Loader.results) {
+			if(season.equalsIgnoreCase(r.getSeason()))
+				tourneyResults.add(r);
+		}
+		return tourneyResults;
 	}
 
 }

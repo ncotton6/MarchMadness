@@ -1,8 +1,12 @@
 package model.sim;
 
+import java.util.List;
+
 import model.Game;
 import model.GameSimulator;
+import model.Link;
 import model.Tuple;
+import model.data.Result;
 
 /**
  * This implementation of {@link GameSimulator} will use data from past to
@@ -15,6 +19,12 @@ import model.Tuple;
 public class ActualSim implements GameSimulator {
 
 	private String season;
+	private List<Result> tourney_result;
+
+	public ActualSim(String season) {
+		this.season = season;
+		this.tourney_result = Link.results(season);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -23,6 +33,18 @@ public class ActualSim implements GameSimulator {
 	 */
 	@Override
 	public Tuple<Double, Double> simulate(Game game, int round) {
+		for (Result r : tourney_result) {
+			if (game.getA().getId() == r.getLteam()
+					&& game.getB().getId() == r.getWteam()) {
+				return new Tuple<Double, Double>(0d, 1d);
+			}
+			if (game.getA().getId() == r.getWteam()
+					&& game.getB().getId() == r.getLteam()) {
+				return new Tuple<Double, Double>(1d, 0d);
+			}
+		}
+		// something went wrong, and couldn't find the game
+		System.out.println("ERROR: Actual Sim couldn't find the game.");
 		return new Tuple<Double, Double>(1d, 0d);
 	}
 

@@ -40,7 +40,7 @@ public class Madness {
 		Bracket currentSeason = new Bracket(midwest, west, east, south);
 
 		System.out.println();
-		currentSeason.solve(new RandomSim(100000));
+		currentSeason.solve(new RandomSim(900));
 		System.out.println(currentSeason.getWinner().getWinner().getName());
 	}
 
