@@ -64,6 +64,16 @@ public class Bracket {
 		return null;
 	}
 
+	/**
+	 * Returns the percentage of accuracy.
+	 * 
+	 * @param b
+	 * @return
+	 */
+	private double compare(Bracket b) {
+		return 0;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

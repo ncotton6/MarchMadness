@@ -47,7 +47,7 @@ public class Madness {
 		Bracket Hseason = Bracket.season("H");
 		ActualSim as = new ActualSim("H");
 		Hseason.solve(as);
-		//System.out.println(Hseason.getWinner().getWinner().getName());
+		System.out.println(Hseason.getWinner().getWinner().getName());
 	}
 
 }
