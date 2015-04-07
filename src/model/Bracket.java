@@ -70,8 +70,26 @@ public class Bracket {
 	 * @param b
 	 * @return
 	 */
-	private double compare(Bracket b) {
-		return 0;
+	public double compare(Bracket b) {
+		return (double) compareHelper(this.winner, b.getWinner()) / 63;
+	}
+
+	/**
+	 * Recursive helper function for {@link Bracket#compare(Bracket)}
+	 * 
+	 * @param b
+	 * @param actual
+	 * @return
+	 */
+	private int compareHelper(Node b, Node actual) {
+		if (b == null && actual == null)
+			return 0;
+		int count = 0;
+		count += compareHelper(b.getChildren()[0], actual.getChildren()[0]);
+		count += compareHelper(b.getChildren()[1], actual.getChildren()[1]);
+		if (b.getWinner().getId() == actual.getWinner().getId())
+			++count;
+		return count;
 	}
 
 	/*

@@ -48,6 +48,14 @@ public class Madness {
 		ActualSim as = new ActualSim("H");
 		Hseason.solve(as);
 		System.out.println(Hseason.getWinner().getWinner().getName());
+		System.out.println(Hseason.getWinner().getGame().getA().getName()
+				+ "  " + Hseason.getWinner().getGame().getB().getName());
+		
+		Bracket Hseason2 = Bracket.season("H");
+		RandomSim rs = new RandomSim();
+		Hseason2.solve(rs);
+		
+		System.out.println(Hseason.compare(Hseason2));
 	}
 
 }
