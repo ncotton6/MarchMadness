@@ -32,22 +32,22 @@ public class Madness {
 				"Georgetown", "Utah", "SMU", "Iowa", "San Diego St",
 				"St John's", "Davidson", "UCLA", "Stephen F. Austin",
 				"E Washington", "UAB", "North Dakota", "Robert Morris" };
-
-		int[] midwest = Link.lookupTeams(midwestString);
-		int[] west = Link.lookupTeams(westString);
-		int[] east = Link.lookupTeams(eastString);
-		int[] south = Link.lookupTeams(southString);
-
-		Bracket currentSeason = new Bracket(midwest, west, east, south);
-
 		/*
+		 * int[] midwest = Link.lookupTeams(midwestString); int[] west =
+		 * Link.lookupTeams(westString); int[] east =
+		 * Link.lookupTeams(eastString); int[] south =
+		 * Link.lookupTeams(southString);
+		 * 
+		 * Bracket currentSeason = new Bracket(midwest, west, east, south);
+		 * 
+		 * 
 		 * System.out.println(); currentSeason.solve(new RandomSim(900));
 		 * System.out.println(currentSeason.getWinner().getWinner().getName());
 		 */
 		Bracket Hseason = Bracket.season("H");
 		ActualSim as = new ActualSim("H");
 		Hseason.solve(as);
-		System.out.println(Hseason.getWinner().getWinner().getName());
+		//System.out.println(Hseason.getWinner().getWinner().getName());
 	}
 
 }
