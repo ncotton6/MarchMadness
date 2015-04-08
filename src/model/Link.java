@@ -6,6 +6,7 @@ import java.util.List;
 import model.data.Loader;
 import model.data.Result;
 import model.data.Team;
+import model.data.TeamStat;
 import model.data.TourneySeed;
 
 /**
@@ -93,5 +94,10 @@ public class Link {
 				seeding[ts.getRegion()][ts.getSeed() - 1] = ts.getTeam();
 		}
 		return seeding;
+	}
+
+	public static TeamStat getTeamStat(Team team, String season) {
+		TeamStat ts = new TeamStat();
+		return ts;
 	}
 }

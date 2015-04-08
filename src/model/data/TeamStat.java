@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import model.Attribute;
+
 /**
  * The {@link TeamStat} class will take the mass of data provided by kraggle,
  * and create some cumulative statistics that will be easier to determine what
@@ -17,7 +19,7 @@ public class TeamStat {
 
 	/* Private variables */
 	private String season;
-	private int team, numWins, numLoses, winStreak, losingStreak;
+	private int team, numWins, numLoses, winStreak, losingStreak, seed;
 	private double averagePoints;
 	private List<TeamVersusStat> versusStat = new ArrayList<TeamVersusStat>();
 
@@ -153,6 +155,7 @@ public class TeamStat {
 	/**
 	 * @return the numWins
 	 */
+	@Attribute
 	public int getNumWins() {
 		return numWins;
 	}
@@ -168,6 +171,7 @@ public class TeamStat {
 	/**
 	 * @return the numLoses
 	 */
+	@Attribute
 	public int getNumLoses() {
 		return numLoses;
 	}
@@ -183,6 +187,7 @@ public class TeamStat {
 	/**
 	 * @return the winStreak
 	 */
+	@Attribute
 	public int getWinStreak() {
 		return winStreak;
 	}
@@ -198,6 +203,7 @@ public class TeamStat {
 	/**
 	 * @return the losingStreak
 	 */
+	@Attribute
 	public int getLosingStreak() {
 		return losingStreak;
 	}
@@ -213,6 +219,7 @@ public class TeamStat {
 	/**
 	 * @return the averagePoints
 	 */
+	@Attribute
 	public double getAveragePoints() {
 		return averagePoints;
 	}
@@ -239,5 +246,14 @@ public class TeamStat {
 	 */
 	public void setVersusStat(List<TeamVersusStat> versusStat) {
 		this.versusStat = versusStat;
+	}
+
+	@Attribute
+	public int getSeed() {
+		return seed;
+	}
+
+	public void setSeed(int seed) {
+		this.seed = seed;
 	}
 }
