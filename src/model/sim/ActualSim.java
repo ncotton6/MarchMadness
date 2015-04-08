@@ -43,10 +43,7 @@ public class ActualSim implements GameSimulator {
 				return new Tuple<Double, Double>(1d, 0d);
 			}
 		}
-		System.out.println("(" + game.getA().getId() + ")=(" + game.getB().getId() + ")");
-		// something went wrong, and couldn't find the game
-		System.out.println("ERROR: Actual Sim couldn't find the game.");
-		return new Tuple<Double, Double>(1d, 0d);
+		throw new RuntimeException("Couldn't find game");
 	}
 
 	public String getSeason() {

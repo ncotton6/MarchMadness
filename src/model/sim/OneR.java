@@ -1,6 +1,5 @@
 package model.sim;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import model.Game;
