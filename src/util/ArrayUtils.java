@@ -170,7 +170,6 @@ public class ArrayUtils
      *              the old array (right justified)
      * @return A new array of modified size
      */
-    @SuppressWarnings("unchecked")
     public static <T> T[] changeSize(
         T[] arr, int delta, int justification)
     {
