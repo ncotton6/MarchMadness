@@ -1,5 +1,7 @@
 import java.io.IOException;
+import java.lang.reflect.Method;
 
+import model.Attribute;
 import model.Bracket;
 import model.Link;
 import model.data.Loader;
@@ -57,20 +59,24 @@ public class Madness {
 		RandomSim rs = new RandomSim();
 		Hseason2.solve(rs);
 
-		Bracket Hseason3 = Bracket.season("H");
-		OneR r = null;
-		try {
-			r = new OneR("H", TeamStat.class.getDeclaredMethod("getNumWins",
-					null));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if(r != null){
-			Hseason3.solve(r);
+		for (Method m : TeamStat.class.getDeclaredMethods()) {
+			if (m.getAnnotation(Attribute.class) != null) {
+				Bracket Hseason3 = Bracket.season("H");
+				OneR r = null;
+				try {
+					r = new OneR("H", m);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if (r != null) {
+					Hseason3.solve(r);
+					System.out.println(m.getName() + " "
+							+ Hseason.compare(Hseason3));
+				}
+			}
 		}
 
-		System.out.println(Hseason.compare(Hseason2));
-		System.out.println(Hseason.compare(Hseason3));
+		System.out.println("Random " + Hseason.compare(Hseason2));
 
 	}
 

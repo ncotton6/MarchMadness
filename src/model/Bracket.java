@@ -164,17 +164,17 @@ public class Bracket {
 			solveHelper(node.getChildren()[1], gameSimulator);
 			Game game = new Game();
 			game.setA(node.getChildren()[0].getWinner());
-			System.out.println(node.getChildren()[0].getGame().getA().getName()
-					+ " vs. "
-					+ node.getChildren()[0].getGame().getB().getName()
-					+ " winner is "
-					+ node.getChildren()[0].getWinner().getName());
+			/*
+			 * System.out.println(node.getChildren()[0].getGame().getA().getName(
+			 * ) + " vs. " + node.getChildren()[0].getGame().getB().getName() +
+			 * " winner is " + node.getChildren()[0].getWinner().getName());
+			 */
 			game.setB(node.getChildren()[1].getWinner());
-			System.out.println(node.getChildren()[1].getGame().getA().getName()
-					+ " vs. "
-					+ node.getChildren()[1].getGame().getB().getName()
-					+ " winner is "
-					+ node.getChildren()[1].getWinner().getName());
+			// System.out.println(node.getChildren()[1].getGame().getA().getName()
+			// + " vs. "
+			// + node.getChildren()[1].getGame().getB().getName()
+			// + " winner is "
+			// + node.getChildren()[1].getWinner().getName());
 			node.setGame(game);
 			Tuple<Double, Double> result = gameSimulator.simulate(game, 0);
 			game.setAScore(result.v1);

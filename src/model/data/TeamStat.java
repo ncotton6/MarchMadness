@@ -248,12 +248,16 @@ public class TeamStat {
 		this.versusStat = versusStat;
 	}
 
-	@Attribute
 	public int getSeed() {
 		return seed;
 	}
 
 	public void setSeed(int seed) {
 		this.seed = seed;
+	}
+
+	@Attribute
+	public int getReverseSeed() {
+		return -seed;
 	}
 }
