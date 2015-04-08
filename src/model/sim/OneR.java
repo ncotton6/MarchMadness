@@ -22,10 +22,10 @@ public class OneR implements GameSimulator {
 	private String season;
 	private Method oneRValue;
 
-	private OneR() {
+	public OneR() {
 	}
 
-	private OneR(String season, Method oneRValue) {
+	public OneR(String season, Method oneRValue) {
 		this.setSeason(season);
 		this.setOneRValue(oneRValue);
 	}
@@ -39,9 +39,18 @@ public class OneR implements GameSimulator {
 			TeamStat tsb = Link.getTeamStat(b, season);
 			// TODO possible make this more generic, not have double be the
 			// return type.
-			double aValue = (double) oneRValue.invoke(tsa, null);
-			double bValue = (double) oneRValue.invoke(tsb, null);
-			return new Tuple<Double, Double>(aValue, bValue);
+			double aTvalue = 0;
+			double bTvalue = 0;
+			Object aValue = oneRValue.invoke(tsa, new Object[] {});
+			Object bValue = oneRValue.invoke(tsb, new Object[] {});
+			if (aValue instanceof Integer) {
+				aTvalue = ((Integer) aValue).doubleValue();
+				bTvalue = ((Integer) bValue).doubleValue();
+			} else if (aValue instanceof Double) {
+				aTvalue = ((Double) aValue).doubleValue();
+				bTvalue = ((Double) bValue).doubleValue();
+			}
+			return new Tuple<Double, Double>(aTvalue, bTvalue);
 
 		} catch (Exception e) {
 			e.printStackTrace();

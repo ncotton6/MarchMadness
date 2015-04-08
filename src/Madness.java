@@ -3,7 +3,9 @@ import java.io.IOException;
 import model.Bracket;
 import model.Link;
 import model.data.Loader;
+import model.data.TeamStat;
 import model.sim.ActualSim;
+import model.sim.OneR;
 import model.sim.RandomSim;
 
 public class Madness {
@@ -50,12 +52,26 @@ public class Madness {
 		System.out.println(Hseason.getWinner().getWinner().getName());
 		System.out.println(Hseason.getWinner().getGame().getA().getName()
 				+ "  " + Hseason.getWinner().getGame().getB().getName());
-		
+
 		Bracket Hseason2 = Bracket.season("H");
 		RandomSim rs = new RandomSim();
 		Hseason2.solve(rs);
-		
+
+		Bracket Hseason3 = Bracket.season("H");
+		OneR r = null;
+		try {
+			r = new OneR("H", TeamStat.class.getDeclaredMethod("getNumWins",
+					null));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(r != null){
+			Hseason3.solve(r);
+		}
+
 		System.out.println(Hseason.compare(Hseason2));
+		System.out.println(Hseason.compare(Hseason3));
+
 	}
 
 }
