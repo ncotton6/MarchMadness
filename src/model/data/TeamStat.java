@@ -203,9 +203,13 @@ public class TeamStat {
 	/**
 	 * @return the losingStreak
 	 */
-	@Attribute
 	public int getLosingStreak() {
 		return losingStreak;
+	}
+
+	@Attribute
+	public int getReverseLosingStreak() {
+		return -losingStreak;
 	}
 
 	/**
