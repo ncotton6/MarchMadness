@@ -64,6 +64,34 @@ public class Bracket {
 		return null;
 	}
 
+	/**
+	 * Returns the percentage of accuracy.
+	 * 
+	 * @param b
+	 * @return
+	 */
+	public double compare(Bracket b) {
+		return (double) compareHelper(this.winner, b.getWinner()) / 63;
+	}
+
+	/**
+	 * Recursive helper function for {@link Bracket#compare(Bracket)}
+	 * 
+	 * @param b
+	 * @param actual
+	 * @return
+	 */
+	private int compareHelper(Node b, Node actual) {
+		if (b == null && actual == null)
+			return 0;
+		int count = 0;
+		count += compareHelper(b.getChildren()[0], actual.getChildren()[0]);
+		count += compareHelper(b.getChildren()[1], actual.getChildren()[1]);
+		if (b.getWinner().getId() == actual.getWinner().getId())
+			++count;
+		return count;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -136,22 +164,28 @@ public class Bracket {
 			solveHelper(node.getChildren()[1], gameSimulator);
 			Game game = new Game();
 			game.setA(node.getChildren()[0].getWinner());
-			System.out.println(node.getChildren()[0].getGame().getA().getName()
-					+ " vs. "
-					+ node.getChildren()[0].getGame().getB().getName()
-					+ " winner is "
-					+ node.getChildren()[0].getWinner().getName());
+			/*
+			 * System.out.println(node.getChildren()[0].getGame().getA().getName(
+			 * ) + " vs. " + node.getChildren()[0].getGame().getB().getName() +
+			 * " winner is " + node.getChildren()[0].getWinner().getName());
+			 */
 			game.setB(node.getChildren()[1].getWinner());
-			System.out.println(node.getChildren()[1].getGame().getA().getName()
-					+ " vs. "
-					+ node.getChildren()[1].getGame().getB().getName()
-					+ " winner is "
-					+ node.getChildren()[1].getWinner().getName());
+			// System.out.println(node.getChildren()[1].getGame().getA().getName()
+			// + " vs. "
+			// + node.getChildren()[1].getGame().getB().getName()
+			// + " winner is "
+			// + node.getChildren()[1].getWinner().getName());
 			node.setGame(game);
 			Tuple<Double, Double> result = gameSimulator.simulate(game, 0);
 			game.setAScore(result.v1);
 			game.setBScore(result.v2);
 		}
+	}
+
+	public static Bracket season(String season) {
+		int[][] bracketSeeding = Link.getBracketSeeding(season);
+		return new Bracket(bracketSeeding[0], bracketSeeding[1],
+				bracketSeeding[2], bracketSeeding[3]);
 	}
 
 	/**
