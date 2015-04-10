@@ -27,7 +27,7 @@ public class Loader {
 		// parse season
 		{
 			FileInputStream fis = new FileInputStream(new File("data"
-					+ File.separator + "regular_season_results.csv"));
+					+ File.separator + "regular_season_compact_results.csv"));
 			regularSeason = CSVReader.parse(fis, Season.class);
 			fis.close();
 		}

@@ -49,11 +49,13 @@ public class OneR implements GameSimulator {
 				aTvalue = ((Double) aValue).doubleValue();
 				bTvalue = ((Double) bValue).doubleValue();
 			}
+			//System.out.println(aTvalue + " " + bTvalue + " " + oneRValue.getName());
 			return new Tuple<Double, Double>(aTvalue, bTvalue);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("Default returned");
 		return new Tuple<Double, Double>(1d, 0d);
 	}
 
