@@ -48,7 +48,7 @@ public class Loader {
 		{
 			// parse tournament results
 			FileInputStream fis = new FileInputStream(new File("data"
-					+ File.separator + "tourney_results.csv"));
+					+ File.separator + "tourney_compact_results.csv"));
 			results = CSVReader.parse(fis, Result.class);
 			fis.close();
 		}

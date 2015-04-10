@@ -3,7 +3,7 @@ package model.data;
 import datareader.CSVValue;
 
 public class Result {
-	private String season;
+	private String season, wloc;
 	private int daynum, wteam, wscore, lteam, lscore, numot;
 
 	/**
@@ -120,5 +120,21 @@ public class Result {
 	@CSVValue(ColumnName = "NUMOT", ColumnType = String.class)
 	public void setNumot(String numot) {
 		this.numot = numot.equalsIgnoreCase("NA") ? 0 : new Integer(numot);
+	}
+
+	/**
+	 * @return the wloc
+	 */
+	public String getWloc() {
+		return wloc;
+	}
+
+	/**
+	 * @param wloc
+	 *            the wloc to set
+	 */
+	@CSVValue(ColumnName = "WLOC", ColumnType = String.class)
+	public void setWloc(String wloc) {
+		this.wloc = wloc;
 	}
 }

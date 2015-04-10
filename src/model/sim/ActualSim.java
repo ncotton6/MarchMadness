@@ -34,6 +34,11 @@ public class ActualSim implements GameSimulator {
 	@Override
 	public Tuple<Double, Double> simulate(Game game, int round) {
 		for (Result r : tourney_result) {
+			System.out.println(game == null);
+			System.out.println(game.getA() == null);
+			System.out.println(game.getB() == null);
+			System.out.println(r == null);
+			System.out.println(r.getLteam());
 			if (game.getA().getId() == r.getLteam()
 					&& game.getB().getId() == r.getWteam()) {
 				return new Tuple<Double, Double>(0d, 1d);
