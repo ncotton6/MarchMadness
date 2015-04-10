@@ -4,6 +4,13 @@ import model.Game;
 import model.GameSimulator;
 import model.Tuple;
 
+/**
+ * This implementation of the {@link GameSimulator} will use agglomeration of
+ * data to determine who will win a particular game.
+ * 
+ * @author Nathaniel Cotton
+ * 
+ */
 public class AgglomerationSim implements GameSimulator {
 
 	@Override
