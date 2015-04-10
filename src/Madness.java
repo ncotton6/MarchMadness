@@ -1,8 +1,18 @@
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
+import model.Attribute;
 import model.Bracket;
 import model.Link;
 import model.data.Loader;
+import model.data.SeasonDetail;
+import model.data.TeamStat;
+import model.sim.ActualSim;
+import model.sim.OneR;
 import model.sim.RandomSim;
 
 public class Madness {
@@ -31,17 +41,65 @@ public class Madness {
 				"Georgetown", "Utah", "SMU", "Iowa", "San Diego St",
 				"St John's", "Davidson", "UCLA", "Stephen F. Austin",
 				"E Washington", "UAB", "North Dakota", "Robert Morris" };
+		/*
+		 * int[] midwest = Link.lookupTeams(midwestString); int[] west =
+		 * Link.lookupTeams(westString); int[] east =
+		 * Link.lookupTeams(eastString); int[] south =
+		 * Link.lookupTeams(southString);
+		 * 
+		 * Bracket currentSeason = new Bracket(midwest, west, east, south);
+		 * 
+		 * 
+		 * System.out.println(); currentSeason.solve(new RandomSim(900));
+		 * System.out.println(currentSeason.getWinner().getWinner().getName());
+		 */
 
-		int[] midwest = Link.lookupTeams(midwestString);
-		int[] west = Link.lookupTeams(westString);
-		int[] east = Link.lookupTeams(eastString);
-		int[] south = Link.lookupTeams(southString);
+		// Build random probability
+		double value = 0;
+		RandomSim randomsim = new RandomSim(100000);
+		Bracket actualH = Bracket.season("H");
+		ActualSim as = new ActualSim("H");
+		actualH.solve(as);
+		for (int i = 0; i < 10000; ++i) {
+			Bracket h = Bracket.season("H");
+			h.solve(randomsim);
+			value += actualH.compare(h);
+		}
+		System.out.println("Average correct predications with random guessing "
+				+ (value / 10000));
 
-		Bracket currentSeason = new Bracket(midwest, west, east, south);
+		HashMap<Method, ArrayList<Double>> data = new HashMap<Method, ArrayList<Double>>();
+		for (SeasonDetail sd : Loader.seasonDetail) {
+			try {
+				Bracket actual = Bracket.season(sd.getSeason());
+				as = new ActualSim(sd.getSeason());
+				actual.solve(as);
+				for (Method m : TeamStat.class.getDeclaredMethods()) {
+					if (m.getAnnotation(Attribute.class) != null) {
+						OneR r = new OneR(sd.getSeason(), m);
+						Bracket season = Bracket.season(sd.getSeason());
+						season.solve(r);
+						if (!data.containsKey(m))
+							data.put(m, new ArrayList<Double>());
+						data.get(m).add(actual.compare(season));
+					}
+				}
+			} catch (Exception e) {
+			}
+		}
 
-		System.out.println();
-		currentSeason.solve(new RandomSim(100000));
-		System.out.println(currentSeason.getWinner().getWinner().getName());
+		for (Method m : data.keySet()) {
+			System.out.println(m.getName() + " "
+					+ Arrays.toString(data.get(m).toArray()));
+			System.out.println("Avg " + avg(data.get(m)));
+		}
+
 	}
 
+	private static double avg(ArrayList<Double> arrayList) {
+		double value = 0;
+		for (double d : arrayList)
+			value += d;
+		return value / arrayList.size();
+	}
 }
