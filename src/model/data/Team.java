@@ -17,7 +17,7 @@ public class Team {
 	 * @param id
 	 *            the id to set
 	 */
-	@CSVValue(ColumnName = "ID", ColumnType = Integer.class)
+	@CSVValue(ColumnName = "TEAM_ID", ColumnType = Integer.class)
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -33,7 +33,7 @@ public class Team {
 	 * @param name
 	 *            the name to set
 	 */
-	@CSVValue(ColumnName = "NAME", ColumnType = String.class)
+	@CSVValue(ColumnName = "TEAM_NAME", ColumnType = String.class)
 	public void setName(String name) {
 		this.name = name;
 	}
