@@ -67,6 +67,7 @@ public class Madness {
 
 		HashMap<Method, ArrayList<Double>> data = new HashMap<Method, ArrayList<Double>>();
 		for (SeasonDetail sd : Loader.seasonDetail) {
+			System.out.println(sd.getSeason());
 			try {
 				Bracket actual = Bracket.season(sd.getSeason());
 				as = new ActualSim(sd.getSeason());
