@@ -54,11 +54,11 @@ public class Madness {
 		// Build random probability
 		double value = 0;
 		RandomSim randomsim = new RandomSim(100000);
-		Bracket actualH = Bracket.season("1999");
-		ActualSim as = new ActualSim("1999");
+		Bracket actualH = Bracket.season("2003");
+		ActualSim as = new ActualSim("2003");
 		actualH.solve(as);
 		for (int i = 0; i < 10000; ++i) {
-			Bracket h = Bracket.season("1999");
+			Bracket h = Bracket.season("2003");
 			h.solve(randomsim);
 			value += actualH.compare(h);
 		}

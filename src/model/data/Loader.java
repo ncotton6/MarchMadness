@@ -3,6 +3,7 @@ package model.data;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import datareader.CSVReader;
@@ -27,7 +28,7 @@ public class Loader {
 		// parse season
 		{
 			FileInputStream fis = new FileInputStream(new File("data"
-					+ File.separator + "regular_season_compact_results.csv"));
+					+ File.separator + "regular_season_detailed_results.csv"));
 			regularSeason = CSVReader.parse(fis, Season.class);
 			fis.close();
 		}
@@ -37,6 +38,13 @@ public class Loader {
 					+ File.separator + "seasons.csv"));
 			seasonDetail = CSVReader.parse(fis, SeasonDetail.class);
 			fis.close();
+			Iterator<SeasonDetail> it = seasonDetail.iterator();
+			while (it.hasNext()) {
+				SeasonDetail sd = it.next();
+				if (Integer.valueOf(sd.getSeason()) < 2003)
+					it.remove();
+			}
+
 		}
 		{
 			// parse teams
@@ -48,7 +56,7 @@ public class Loader {
 		{
 			// parse tournament results
 			FileInputStream fis = new FileInputStream(new File("data"
-					+ File.separator + "tourney_compact_results.csv"));
+					+ File.separator + "tourney_detailed_results.csv"));
 			results = CSVReader.parse(fis, Result.class);
 			fis.close();
 		}
