@@ -171,10 +171,24 @@ public class Link {
 		int longestLosingStreak = 0;
 		int tempWinStreak = 0;
 		int tempLosingStreak = 0;
-		double totalscore = 0;
+		double totalscore = 0, fgm = 0, fga = 0, fgm3 = 0, fga3 = 0, ftm = 0, fta = 0, or = 0, dr = 0, ast = 0, to = 0, stl = 0, blk = 0, pf = 0;
 		for (Season sea : s) {
 			if (sea.getLteam() == team.getId()) {
 				totalscore += sea.getLscore();
+				fgm += sea.getLfgm();
+				fga += sea.getLfga();
+				fgm3 += sea.getLfgm3();
+				fga3 += sea.getLfga3();
+				ftm += sea.getLftm();
+				fta += sea.getLfta();
+				or += sea.getLor();
+				dr += sea.getLdr();
+				ast += sea.getLast();
+				to += sea.getLto();
+				stl += sea.getLstl();
+				blk += sea.getLblk();
+				pf += sea.getLpf();
+
 				++loses;
 				tempWinStreak = 0;
 				++tempLosingStreak;
@@ -182,6 +196,20 @@ public class Link {
 					longestLosingStreak = tempLosingStreak;
 			} else if (sea.getWteam() == team.getId()) {
 				totalscore += sea.getWscore();
+				fgm += sea.getWfgm();
+				fga += sea.getWfga();
+				fgm3 += sea.getWfgm3();
+				fga3 += sea.getWfga3();
+				ftm += sea.getWftm();
+				fta += sea.getWfta();
+				or += sea.getWor();
+				dr += sea.getWdr();
+				ast += sea.getWast();
+				to += sea.getWto();
+				stl += sea.getWstl();
+				blk += sea.getWblk();
+				pf += sea.getWpf();
+
 				++wins;
 				tempLosingStreak = 0;
 				++tempWinStreak;
@@ -196,6 +224,19 @@ public class Link {
 		ts.setWinStreak(longestWinStreak);
 		ts.setLosingStreak(longestLosingStreak);
 		ts.setPoints(totalscore / s.size());
+		ts.setAst(ast / s.size());
+		ts.setDr(dr / s.size());
+		ts.setFga(fga / s.size());
+		ts.setFga3(fga3 / s.size());
+		ts.setFgm(fgm / s.size());
+		ts.setFgm3(fgm3 / s.size());
+		ts.setFta(fta / s.size());
+		ts.setFtm(ftm / s.size());
+		ts.setOr(or / s.size());
+		ts.setPf(pf / s.size());
+		ts.setTo(to / s.size());
+		ts.setblk(blk / s.size());
+		ts.setstl(stl / s.size());
 		ts.setSeed(Link.getSeed(season, team.getId()));
 		ts.setTeam(team.getId());
 		return ts;

@@ -22,7 +22,7 @@ public class TeamStat {
 	private int team, numWins, numLoses, winStreak, losingStreak, seed;
 	/* The following are all averages of a season performance */
 	private double points, fgm, fga, fgm3, fga3, ftm, fta, or, dr, ast, to,
-			wstl, wblk, pf;
+			stl, blk, pf;
 	private List<TeamVersusStat> versusStat = new ArrayList<TeamVersusStat>();
 
 	public class TeamVersusStat implements Comparable<TeamVersusStat>,
@@ -428,35 +428,35 @@ public class TeamStat {
 	}
 
 	/**
-	 * @return the wstl
+	 * @return the stl
 	 */
 	@Attribute
-	public double getWstl() {
-		return wstl;
+	public double getstl() {
+		return stl;
 	}
 
 	/**
 	 * @param wstl
-	 *            the wstl to set
+	 *            the stl to set
 	 */
-	public void setWstl(double wstl) {
-		this.wstl = wstl;
+	public void setstl(double stl) {
+		this.stl = stl;
 	}
 
 	/**
-	 * @return the wblk
+	 * @return the blk
 	 */
 	@Attribute
-	public double getWblk() {
-		return wblk;
+	public double getblk() {
+		return blk;
 	}
 
 	/**
 	 * @param wblk
-	 *            the wblk to set
+	 *            the blk to set
 	 */
-	public void setWblk(double wblk) {
-		this.wblk = wblk;
+	public void setblk(double blk) {
+		this.blk = blk;
 	}
 
 	/**
