@@ -20,7 +20,9 @@ public class TeamStat {
 	/* Private variables */
 	private String season;
 	private int team, numWins, numLoses, winStreak, losingStreak, seed;
-	private double averagePoints;
+	/* The following are all averages of a season performance */
+	private double points, fgm, fga, fgm3, fga3, ftm, fta, or, dr, ast, to,
+			wstl, wblk, pf;
 	private List<TeamVersusStat> versusStat = new ArrayList<TeamVersusStat>();
 
 	public class TeamVersusStat implements Comparable<TeamVersusStat>,
@@ -221,22 +223,6 @@ public class TeamStat {
 	}
 
 	/**
-	 * @return the averagePoints
-	 */
-	@Attribute
-	public double getAveragePoints() {
-		return averagePoints;
-	}
-
-	/**
-	 * @param averagePoints
-	 *            the averagePoints to set
-	 */
-	public void setAveragePoints(double averagePoints) {
-		this.averagePoints = averagePoints;
-	}
-
-	/**
 	 * @return the versusStat
 	 */
 	public List<TeamVersusStat> getVersusStat() {
@@ -263,5 +249,229 @@ public class TeamStat {
 	@Attribute
 	public int getReverseSeed() {
 		return -seed;
+	}
+
+	/**
+	 * @return the points
+	 */
+	@Attribute
+	public double getPoints() {
+		return points;
+	}
+
+	/**
+	 * @param points
+	 *            the points to set
+	 */
+	public void setPoints(double points) {
+		this.points = points;
+	}
+
+	/**
+	 * @return the fgm
+	 */
+	@Attribute
+	public double getFgm() {
+		return fgm;
+	}
+
+	/**
+	 * @param fgm
+	 *            the fgm to set
+	 */
+	public void setFgm(double fgm) {
+		this.fgm = fgm;
+	}
+
+	/**
+	 * @return the fga
+	 */
+	@Attribute
+	public double getFga() {
+		return fga;
+	}
+
+	/**
+	 * @param fga
+	 *            the fga to set
+	 */
+	public void setFga(double fga) {
+		this.fga = fga;
+	}
+
+	/**
+	 * @return the fgm3
+	 */
+	@Attribute
+	public double getFgm3() {
+		return fgm3;
+	}
+
+	/**
+	 * @param fgm3
+	 *            the fgm3 to set
+	 */
+	public void setFgm3(double fgm3) {
+		this.fgm3 = fgm3;
+	}
+
+	/**
+	 * @return the fga3
+	 */
+	@Attribute
+	public double getFga3() {
+		return fga3;
+	}
+
+	/**
+	 * @param fga3
+	 *            the fga3 to set
+	 */
+	public void setFga3(double fga3) {
+		this.fga3 = fga3;
+	}
+
+	/**
+	 * @return the ftm
+	 */
+	@Attribute
+	public double getFtm() {
+		return ftm;
+	}
+
+	/**
+	 * @param ftm
+	 *            the ftm to set
+	 */
+	public void setFtm(double ftm) {
+		this.ftm = ftm;
+	}
+
+	/**
+	 * @return the fta
+	 */
+	@Attribute
+	public double getFta() {
+		return fta;
+	}
+
+	/**
+	 * @param fta
+	 *            the fta to set
+	 */
+	public void setFta(double fta) {
+		this.fta = fta;
+	}
+
+	/**
+	 * @return the or
+	 */
+	@Attribute
+	public double getOr() {
+		return or;
+	}
+
+	/**
+	 * @param or
+	 *            the or to set
+	 */
+	public void setOr(double or) {
+		this.or = or;
+	}
+
+	/**
+	 * @return the dr
+	 */
+	@Attribute
+	public double getDr() {
+		return dr;
+	}
+
+	/**
+	 * @param dr
+	 *            the dr to set
+	 */
+	public void setDr(double dr) {
+		this.dr = dr;
+	}
+
+	/**
+	 * @return the ast
+	 */
+	@Attribute
+	public double getAst() {
+		return ast;
+	}
+
+	/**
+	 * @param ast
+	 *            the ast to set
+	 */
+	public void setAst(double ast) {
+		this.ast = ast;
+	}
+
+	/**
+	 * @return the to
+	 */
+	@Attribute
+	public double getTo() {
+		return to;
+	}
+
+	/**
+	 * @param to
+	 *            the to to set
+	 */
+	public void setTo(double to) {
+		this.to = to;
+	}
+
+	/**
+	 * @return the wstl
+	 */
+	@Attribute
+	public double getWstl() {
+		return wstl;
+	}
+
+	/**
+	 * @param wstl
+	 *            the wstl to set
+	 */
+	public void setWstl(double wstl) {
+		this.wstl = wstl;
+	}
+
+	/**
+	 * @return the wblk
+	 */
+	@Attribute
+	public double getWblk() {
+		return wblk;
+	}
+
+	/**
+	 * @param wblk
+	 *            the wblk to set
+	 */
+	public void setWblk(double wblk) {
+		this.wblk = wblk;
+	}
+
+	/**
+	 * @return the pf
+	 */
+	@Attribute
+	public double getPf() {
+		return pf;
+	}
+
+	/**
+	 * @param pf
+	 *            the pf to set
+	 */
+	public void setPf(double pf) {
+		this.pf = pf;
 	}
 }

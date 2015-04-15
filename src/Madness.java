@@ -87,8 +87,8 @@ public class Madness {
 		}
 
 		for (Method m : data.keySet()) {
-			System.out.println(m.getName() + " "
-					+ Arrays.toString(data.get(m).toArray()));
+			//System.out.println(m.getName() + " "
+				//	+ Arrays.toString(data.get(m).toArray()));
 			System.out.println("Avg " + avg(data.get(m)));
 		}
 

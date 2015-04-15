@@ -174,12 +174,14 @@ public class Link {
 		double totalscore = 0;
 		for (Season sea : s) {
 			if (sea.getLteam() == team.getId()) {
+				totalscore += sea.getLscore();
 				++loses;
 				tempWinStreak = 0;
 				++tempLosingStreak;
 				if (tempLosingStreak > longestLosingStreak)
 					longestLosingStreak = tempLosingStreak;
 			} else if (sea.getWteam() == team.getId()) {
+				totalscore += sea.getWscore();
 				++wins;
 				tempLosingStreak = 0;
 				++tempWinStreak;
@@ -193,7 +195,7 @@ public class Link {
 		ts.setNumLoses(loses);
 		ts.setWinStreak(longestWinStreak);
 		ts.setLosingStreak(longestLosingStreak);
-		ts.setAveragePoints(totalscore / s.size());
+		ts.setPoints(totalscore / s.size());
 		ts.setSeed(Link.getSeed(season, team.getId()));
 		ts.setTeam(team.getId());
 		return ts;
