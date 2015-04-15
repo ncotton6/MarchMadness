@@ -237,6 +237,8 @@ public class Link {
 				for (int k = 0; k < statFields.length; ++k) {
 					String trueName = seasonFields[i].getName().substring(1);
 					if (statFields[k].getName().equals(trueName)) {
+						seasonFields[i].setAccessible(true);
+						statFields[k].setAccessible(true);
 						seasonToStat.put(seasonFields[i], statFields[k]);
 						break;
 					}

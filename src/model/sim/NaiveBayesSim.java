@@ -3,6 +3,8 @@ package model.sim;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+
 import model.Game;
 import model.GameSimulator;
 import model.Link;
@@ -22,8 +24,8 @@ public class NaiveBayesSim implements GameSimulator {
 	/* private static variables */
 	private static List<Stat> losers = null;
 	private static List<Stat> winners = null;
-	private static Stat averageLoser = null;
-	private static Stat averageWinner = null;
+	private static Stat winnerMean = null, winnerStd = null, loserMean = null,
+			loserStd = null;
 
 	/* Private variables */
 	private String season = null;
@@ -45,23 +47,38 @@ public class NaiveBayesSim implements GameSimulator {
 			Tuple<List<Stat>, List<Stat>> winnersLosers = null;
 			try {
 				winnersLosers = Link.getWinnerLoserData();
+				if (winnersLosers != null) {
+					this.winners = winnersLosers.v1;
+					this.losers = winnersLosers.v2;
+					// Crunch the data for the mean, and standard deviation of a
+					// value.
+					SummaryStatistics ss = new SummaryStatistics();
+					Field[] statFields = Stat.class.getDeclaredFields();
+					for (int i = 0; i < statFields.length; ++i) {
+						statFields[i].setAccessible(true);
+						ss.clear();
+						for (Stat s : winners) {
+							ss.addValue(statFields[i].getDouble(s));
+						}
+						// set winner values
+						statFields[i].set(winnerMean, ss.getGeometricMean());
+						statFields[i].set(winnerStd, ss.getStandardDeviation());
+						ss.clear();
+						for (Stat s : losers) {
+							ss.addValue(statFields[i].getDouble(s));
+						}
+						// set loser values
+						statFields[i].set(loserMean, ss.getGeometricMean());
+						statFields[i].set(loserStd, ss.getStandardDeviation());
+					}
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			if (winnersLosers != null) {
-				this.winners = winnersLosers.v1;
-				this.losers = winnersLosers.v2;
-				// calculate average
-				try {
-					this.averageLoser = average(losers);
-					this.averageWinner = average(winners);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
 		}
 
-		if (averageLoser != null && averageWinner != null) {
+		if (winnerMean != null && winnerStd != null && loserMean != null
+				&& loserStd != null) {
 			// classify team a as a loser or a winner
 			TeamStat tsa = Link.getTeamStat(game.getA(), season);
 			double aClassifyValue = 0;
@@ -71,23 +88,8 @@ public class NaiveBayesSim implements GameSimulator {
 			// which team is a bigger winner, or less of a loser
 			return new Tuple<Double, Double>(aClassifyValue, bClassifyValue);
 		}
-		System.err.println("Something went wrong, and the default was returned");
+		System.err
+				.println("Something went wrong, and the default was returned");
 		return new Tuple<Double, Double>(1d, 0d);
-	}
-
-	private Stat average(List<Stat> statList) throws IllegalArgumentException,
-			IllegalAccessException {
-		Stat stat = new Stat();
-		Field[] fields = Stat.class.getFields();
-		for (int i = 0; i < fields.length; ++i) {
-			fields[i].setAccessible(true);
-			double value = 0;
-			for (Stat s : statList) {
-				value += (double) fields[i].get(s);
-			}
-			value = value / statList.size();
-			fields[i].set(stat, value);
-		}
-		return stat;
 	}
 }
