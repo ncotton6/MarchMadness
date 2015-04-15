@@ -20,7 +20,7 @@ public class NaiveBayesSim implements GameSimulator {
 
 	/* private variables */
 	private static List<Stat> losers = null;
-	private static List<Stat> winner = null;
+	private static List<Stat> winners = null;
 	private static Stat averageLoser = null;
 	private static Stat averageWinner = null;
 
@@ -33,20 +33,26 @@ public class NaiveBayesSim implements GameSimulator {
 	public Tuple<Double, Double> simulate(Game game, int round) {
 		// what do winning teams have in common
 		// what do losing teams have in common
-		if (losers == null || winner == null) {
-			Tuple<List<Stat>, List<Stat>> winnersLosers = Link
-					.getWinnerLoserData();
-			this.winner = winnersLosers.v1;
-			this.losers = winnersLosers.v2;
+		if (losers == null || winners == null) {
+			Tuple<List<Stat>, List<Stat>> winnersLosers = null;
+			try {
+				winnersLosers = Link.getWinnerLoserData();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (winnersLosers != null) {
+				this.winners = winnersLosers.v1;
+				this.losers = winnersLosers.v2;
+				// calculate average
+				try {
+					this.averageLoser = average(losers);
+					this.averageWinner = average(winners);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
-
-		// calculate average
-		try {
-			this.averageLoser = average(losers);
-			this.averageWinner = average(winner);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	
 
 		// classify team a as a loser or a winner
 
