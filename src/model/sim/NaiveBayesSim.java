@@ -16,6 +16,8 @@ import model.data.TeamStat;
  * This implementation of the {@link GameSimulator} will use a naive bayes to
  * determine the winner of a game.
  * 
+ * http://en.wikipedia.org/wiki/Naive_Bayes_classifier
+ * 
  * @author Nathaniel Cotton
  * 
  */
@@ -79,16 +81,22 @@ public class NaiveBayesSim implements GameSimulator {
 
 		if (winnerMean != null && winnerStd != null && loserMean != null
 				&& loserStd != null) {
-			// classify team a as a loser or a winner
-			TeamStat tsa = Link.getTeamStat(game.getA(), season);
-			double aClassifyValue = classify(winnerMean, winnerStd, tsa)
-					* (tsa.getNumWins() / (tsa.getNumLoses() + tsa.getNumWins()));
-			// classify team b as a loser or a winner
-			TeamStat tsb = Link.getTeamStat(game.getB(), season);
-			double bClassifyValue = classify(winnerMean, winnerStd, tsb)
-					* (tsb.getNumWins() / (tsb.getNumLoses() + tsb.getNumWins()));
-			// which team is a bigger winner, or less of a loser
-			return new Tuple<Double, Double>(aClassifyValue, bClassifyValue);
+			try {
+				// classify team a as a loser or a winner
+				TeamStat tsa = Link.getTeamStat(game.getA(), season);
+				double aClassifyValue = classify(winnerMean, winnerStd, tsa)
+						* (tsa.getNumWins() / (tsa.getNumLoses() + tsa
+								.getNumWins()));
+				// classify team b as a loser or a winner
+				TeamStat tsb = Link.getTeamStat(game.getB(), season);
+				double bClassifyValue = classify(winnerMean, winnerStd, tsb)
+						* (tsb.getNumWins() / (tsb.getNumLoses() + tsb
+								.getNumWins()));
+				// which team is a bigger winner, or less of a loser
+				return new Tuple<Double, Double>(aClassifyValue, bClassifyValue);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		System.err
 				.println("Something went wrong, and the default was returned");
@@ -100,8 +108,27 @@ public class NaiveBayesSim implements GameSimulator {
 	 * @param std
 	 * @param team
 	 * @return
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws SecurityException
+	 * @throws NoSuchFieldException
 	 */
-	private double classify(Stat mean, Stat std, TeamStat team) {
-		return 0;
+	private double classify(Stat mean, Stat std, TeamStat team)
+			throws IllegalArgumentException, IllegalAccessException,
+			NoSuchFieldException, SecurityException {
+		Field[] statFields = Stat.class.getDeclaredFields();
+		double prob = 1;
+		for (int i = 0; i < statFields.length; ++i) {
+			statFields[i].setAccessible(true);
+			Field f = TeamStat.class.getDeclaredField(statFields[i].getName());
+			f.setAccessible(true);
+			prob *= (1 / Math.sqrt(2 * Math.PI
+					* Math.pow(statFields[i].getDouble(std), 2)))
+					* Math.pow(Math.E,
+							(-Math.pow((f.getDouble(team) - statFields[i]
+									.getDouble(mean)), 2) / (2 * statFields[i]
+									.getDouble(std))));
+		}
+		return prob;
 	}
 }
