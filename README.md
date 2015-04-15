@@ -10,5 +10,7 @@ Nathaniel Cotton
 https://www.kaggle.com/c/march-machine-learning-mania-2015/data
 
 #Dependencies:
-http://commons.apache.org/proper/commons-math/
-http://www.jfree.org/jfreechart/
+<ul>
+<li>http://commons.apache.org/proper/commons-math/</li>
+<li>http://www.jfree.org/jfreechart/</li>
+<ul>
