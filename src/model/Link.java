@@ -1,8 +1,10 @@
 package model;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import model.data.Loader;
@@ -43,7 +45,7 @@ public class Link {
 		}
 		System.out.println("Couldn't find team: " + i);
 		throw new RuntimeException();
-		//return null;
+		// return null;
 	}
 
 	/**
@@ -214,5 +216,51 @@ public class Link {
 			}
 		}
 		return Integer.MAX_VALUE;
+	}
+
+	/**
+	 * Accumulates all the statistics for winners and losers.
+	 * 
+	 * @return
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 */
+	public static Tuple<List<Stat>, List<Stat>> getWinnerLoserData()
+			throws IllegalArgumentException, IllegalAccessException {
+		List<Stat> loser = new ArrayList<Stat>();
+		List<Stat> winner = new ArrayList<Stat>();
+		Field[] seasonFields = Season.class.getDeclaredFields();
+		Field[] statFields = Stat.class.getDeclaredFields();
+		HashMap<Field, Field> seasonToStat = new HashMap<Field, Field>();
+		for (int i = 0; i < seasonFields.length; ++i) {
+			if (seasonFields[i].getAnnotation(FieldAttribute.class) != null)
+				for (int k = 0; k < statFields.length; ++k) {
+					String trueName = seasonFields[i].getName().substring(1);
+					if (statFields[k].getName().equals(trueName)) {
+						seasonToStat.put(seasonFields[i], statFields[k]);
+						break;
+					}
+				}
+		}
+		for (Season r : Loader.regularSeason) {
+			Stat statWinner = new Stat();
+			Stat statLoser = new Stat();
+			// fill out objects
+			for (int i = 0; i < seasonFields.length; ++i) {
+				if (seasonFields[i].getAnnotation(FieldAttribute.class) != null) {
+					if (seasonFields[i].getName().startsWith("w")) {
+						seasonToStat.get(seasonFields[i]).set(statWinner,
+								seasonFields[i].get(r));
+					} else {
+						seasonToStat.get(seasonFields[i]).set(statLoser,
+								seasonFields[i].get(r));
+					}
+				}
+			}
+			// add to lists
+			loser.add(statLoser);
+			winner.add(statWinner);
+		}
+		return new Tuple<List<Stat>, List<Stat>>(winner, loser);
 	}
 }

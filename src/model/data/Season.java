@@ -1,14 +1,16 @@
 package model.data;
 
+import model.FieldAttribute;
 import datareader.CSVValue;
 
 public class Season {
 
 	private String season, wloc;
-	private int daynum, wteam, wscore, lteam, lscore, numot, wfgm, wfga, wfgm3,
-			wfga3, wftm, wfta, wor, wdr, wast, wto, wstl, wblk, wpf, lfgm,
-			lfga, lfgm3, lfga3, lftm, lfta, lor, ldr, last, lto, lstl, lblk,
-			lpf;;
+	private int daynum, wteam, wscore, lteam, lscore, numot;
+	@FieldAttribute
+	private int wfgm, wfga, wfgm3, wfga3, wftm, wfta, wor, wdr, wast, wto,
+			wstl, wblk, wpf, lfgm, lfga, lfgm3, lfga3, lftm, lfta, lor, ldr,
+			last, lto, lstl, lblk, lpf;
 
 	/**
 	 * @return the season
