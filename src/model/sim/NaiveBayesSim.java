@@ -8,6 +8,7 @@ import model.GameSimulator;
 import model.Link;
 import model.Stat;
 import model.Tuple;
+import model.data.TeamStat;
 
 /**
  * This implementation of the {@link GameSimulator} will use a naive bayes to
@@ -18,11 +19,18 @@ import model.Tuple;
  */
 public class NaiveBayesSim implements GameSimulator {
 
-	/* private variables */
+	/* private static variables */
 	private static List<Stat> losers = null;
 	private static List<Stat> winners = null;
 	private static Stat averageLoser = null;
 	private static Stat averageWinner = null;
+
+	/* Private variables */
+	private String season = null;
+
+	public NaiveBayesSim(String season) {
+		this.season = season;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -52,14 +60,18 @@ public class NaiveBayesSim implements GameSimulator {
 				}
 			}
 		}
-	
 
-		// classify team a as a loser or a winner
-
-		// classify team b as a loser or a winner
-
-		// which team is a bigger winner, or less of a loser
-
+		if (averageLoser != null && averageWinner != null) {
+			// classify team a as a loser or a winner
+			TeamStat tsa = Link.getTeamStat(game.getA(), season);
+			double aClassifyValue = 0;
+			// classify team b as a loser or a winner
+			TeamStat tsb = Link.getTeamStat(game.getB(), season);
+			double bClassifyValue = 0;
+			// which team is a bigger winner, or less of a loser
+			return new Tuple<Double, Double>(aClassifyValue, bClassifyValue);
+		}
+		System.err.println("Something went wrong, and the default was returned");
 		return new Tuple<Double, Double>(1d, 0d);
 	}
 
