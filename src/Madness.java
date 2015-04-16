@@ -10,6 +10,7 @@ import model.data.Loader;
 import model.data.SeasonDetail;
 import model.data.TeamStat;
 import model.sim.ActualSim;
+import model.sim.NaiveBayesSim;
 import model.sim.OneR;
 import model.sim.RandomSim;
 
@@ -67,11 +68,15 @@ public class Madness {
 
 		HashMap<Method, ArrayList<Double>> data = new HashMap<Method, ArrayList<Double>>();
 		for (SeasonDetail sd : Loader.seasonDetail) {
-			System.out.println(sd.getSeason());
 			try {
 				Bracket actual = Bracket.season(sd.getSeason());
 				as = new ActualSim(sd.getSeason());
 				actual.solve(as);
+				NaiveBayesSim nbs = new NaiveBayesSim(sd.getSeason());
+				Bracket test = Bracket.season(sd.getSeason());
+				test.solve(nbs);
+				System.out.println(sd.getSeason());
+				//System.out.println("Naive Bayes " + sd.getSeason() + " "  + actual.compare(test));
 				for (Method m : TeamStat.class.getDeclaredMethods()) {
 					if (m.getAnnotation(Attribute.class) != null) {
 						OneR r = new OneR(sd.getSeason(), m);

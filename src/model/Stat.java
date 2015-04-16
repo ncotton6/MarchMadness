@@ -9,23 +9,8 @@ package model;
  */
 public class Stat {
 
-	private double numot, fgm, fga, fgm3, fga3, ftm, fta, or, dr, ast, to, stl,
-			blk, pf;
-
-	/**
-	 * @return the numot
-	 */
-	public double getNumot() {
-		return numot;
-	}
-
-	/**
-	 * @param numot
-	 *            the numot to set
-	 */
-	public void setNumot(double numot) {
-		this.numot = numot;
-	}
+	private double fgm, fga, fgm3, fga3, ftm, fta, or, dr, ast, to, stl, blk,
+			pf;
 
 	/**
 	 * @return the fgm

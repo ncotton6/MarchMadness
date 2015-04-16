@@ -26,8 +26,8 @@ public class NaiveBayesSim implements GameSimulator {
 	/* private static variables */
 	private static List<Stat> losers = null;
 	private static List<Stat> winners = null;
-	private static Stat winnerMean = null, winnerStd = null, loserMean = null,
-			loserStd = null;
+	private static Stat winnerMean = new Stat(), winnerStd = new Stat(),
+			loserMean = new Stat(), loserStd = new Stat();
 
 	/* Private variables */
 	private String season = null;
@@ -85,15 +85,15 @@ public class NaiveBayesSim implements GameSimulator {
 				// classify team a as a loser or a winner
 				TeamStat tsa = Link.getTeamStat(game.getA(), season);
 				double aClassifyValue = classify(winnerMean, winnerStd, tsa)
-						* (tsa.getNumWins() / (tsa.getNumLoses() + tsa
-								.getNumWins()));
+						* (((double) tsa.getNumWins()) / (double) (tsa
+								.getNumLoses() + tsa.getNumWins()));
 				// classify team b as a loser or a winner
 				TeamStat tsb = Link.getTeamStat(game.getB(), season);
 				double bClassifyValue = classify(winnerMean, winnerStd, tsb)
-						* (tsb.getNumWins() / (tsb.getNumLoses() + tsb
-								.getNumWins()));
+						* (((double) tsb.getNumWins()) / (double) (tsb
+								.getNumLoses() + tsb.getNumWins()));
 				// which team is a bigger winner, or less of a loser
-				return new Tuple<Double, Double>(aClassifyValue, bClassifyValue);
+				return new Tuple<Double, Double>(bClassifyValue, aClassifyValue);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
