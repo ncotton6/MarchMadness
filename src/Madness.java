@@ -88,6 +88,7 @@ public class Madness {
 					}
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 
