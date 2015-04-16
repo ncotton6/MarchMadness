@@ -63,15 +63,24 @@ public class NaiveBayesSim implements GameSimulator {
 							ss.addValue(statFields[i].getDouble(s));
 						}
 						// set winner values
-						statFields[i].set(winnerMean, ss.getGeometricMean());
+						statFields[i].set(winnerMean, ss.getMean());
 						statFields[i].set(winnerStd, ss.getStandardDeviation());
+						/*System.out.println("winner " + statFields[i].getName()
+								+ " " + ss.getMean() + " "
+								+ ss.getGeometricMean() + " "
+								+ ss.getStandardDeviation());*/
 						ss.clear();
 						for (Stat s : losers) {
 							ss.addValue(statFields[i].getDouble(s));
 						}
 						// set loser values
-						statFields[i].set(loserMean, ss.getGeometricMean());
+						statFields[i].set(loserMean, ss.getMean());
 						statFields[i].set(loserStd, ss.getStandardDeviation());
+						/*System.out.println("loser " + statFields[i].getName()
+								+ " " + ss.getMean() + " "
+								+ ss.getGeometricMean() + " "
+								+ ss.getStandardDeviation());*/
+
 					}
 				}
 			} catch (Exception e) {
@@ -93,7 +102,7 @@ public class NaiveBayesSim implements GameSimulator {
 						* (((double) tsb.getNumWins()) / (double) (tsb
 								.getNumLoses() + tsb.getNumWins()));
 				// which team is a bigger winner, or less of a loser
-				return new Tuple<Double, Double>(bClassifyValue, aClassifyValue);
+				return new Tuple<Double, Double>(aClassifyValue, bClassifyValue);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

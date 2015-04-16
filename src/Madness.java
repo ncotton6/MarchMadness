@@ -76,7 +76,7 @@ public class Madness {
 				Bracket test = Bracket.season(sd.getSeason());
 				test.solve(nbs);
 				System.out.println(sd.getSeason());
-				//System.out.println("Naive Bayes " + sd.getSeason() + " "  + actual.compare(test));
+				System.out.println("Naive Bayes " + sd.getSeason() + " "  + actual.compare(test));
 				for (Method m : TeamStat.class.getDeclaredMethods()) {
 					if (m.getAnnotation(Attribute.class) != null) {
 						OneR r = new OneR(sd.getSeason(), m);
