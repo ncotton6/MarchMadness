@@ -17,7 +17,7 @@ import util.*;
  * data to determine who will win a particular game.
  * 
  * @author Nathaniel Cotton
- * @author Ryan Conrad
+ * 
  */
 public class AgglomerationSim implements GameSimulator {
 
