@@ -41,7 +41,9 @@ public class Link {
 			if (t.getId() == i)
 				return t;
 		}
-		return null;
+		System.out.println("Couldn't find team: " + i);
+		throw new RuntimeException();
+		//return null;
 	}
 
 	/**

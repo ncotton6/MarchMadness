@@ -17,7 +17,7 @@ public class Team {
 	 * @param id
 	 *            the id to set
 	 */
-	@CSVValue(ColumnName = "ID", ColumnType = Integer.class)
+	@CSVValue(ColumnName = "TEAM_ID", ColumnType = Integer.class)
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -33,8 +33,16 @@ public class Team {
 	 * @param name
 	 *            the name to set
 	 */
-	@CSVValue(ColumnName = "NAME", ColumnType = String.class)
+	@CSVValue(ColumnName = "TEAM_NAME", ColumnType = String.class)
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", name=" + name + "]";
 	}
 }
