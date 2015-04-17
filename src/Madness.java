@@ -14,6 +14,7 @@ import model.data.TeamStat;
 import model.sim.ActualSim;
 import model.sim.OneR;
 import model.sim.RandomSim;
+import model.sim.AgglomerationSim;
 
 public class Madness {
 
@@ -77,8 +78,12 @@ public class Madness {
 				for (Method m : TeamStat.class.getDeclaredMethods()) {
 					if (m.getAnnotation(Attribute.class) != null) {
 						OneR r = new OneR(sd.getSeason(), m);
+                        AgglomerationSim agg = new AgglomerationSim(
+                            sd.getSeason(), m);
+                        // season object is not of type Season
 						Bracket season = Bracket.season(sd.getSeason());
 						season.solve(r);
+                        season.solve(agg);
 						if (!data.containsKey(m))
 							data.put(m, new ArrayList<Double>());
 						data.get(m).add(actual.compare(season));

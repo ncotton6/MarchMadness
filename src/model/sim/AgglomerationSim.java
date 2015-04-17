@@ -1,8 +1,16 @@
 package model.sim;
 
+import java.lang.reflect.Method;
+
 import model.Game;
 import model.GameSimulator;
+import model.Link;
 import model.Tuple;
+import model.data.Team;
+import model.data.TeamStat;
+
+import java.util.ArrayList;
+import util.*;
 
 /**
  * This implementation of the {@link GameSimulator} will use agglomeration of
@@ -13,57 +21,211 @@ import model.Tuple;
  */
 public class AgglomerationSim implements GameSimulator {
 
-	@Override
-	public Tuple<Double, Double> simulate(Game game, int round) {
-        // Get methods
-        
-        // More setup
-        
-        // Use reflection to call the appropriate distance metric method?
-        
-        // From here, compare the teams based on the clusters and
-        // return the tuple with appropriate results.
-        
-		return new Tuple<Double, Double>(1d, 0d);
+	private String season;
+	private Method aggloValue;
+
+	public AgglomerationSim() {
 	}
 
-    public void agglomerate()
+	public AgglomerationSim(String season, Method aggloValue) {
+		this.season = season;
+		this.aggloValue = aggloValue;
+	}
+    
+    
+    
+    public class Prototype
     {
-        // Agglomeration algorithm
+        ArrayList<Integer[]> data;
+        ArrayList<Integer> cluster;
+        int id;
         
-        // ArrayList<double>[] clusters
-        // n = number of data points
-        // double[] dists = new double[n][n];
-        // numClusters = m
-        // min = Double.MAX_VALUE;
-        // min_1 = -1
-        // min_2 = -1
-        //
-        // -1 either means invalid or already added to cluster
-        // 
-        //  loop until m clusters left
-        //      loop i in dists
-        //          loop j in dists[]
-        //              if(dists[i][j] != -1)
-        //                  if(i or j most recently added to cluster)
-        //                      // recalculate the distance with new cluster
-        //                      dists[i][j] = lNorm(data1, data2, 2);
-        //                  if(dists[i][j] < min)
-        //                      min = dists[i][j]
-        //                      min_1 = i
-        //                      min_2 = j
-        //      Combine min_1 and min_2, store in min_1
-        //      delete min_1 and min_2 from any of the ArrayLists of clusters
-        //      add min_1 and min_2 to a cluster in the ArrayList of clusters
-        //          new list if neither min_1 nor min_2 were in a cluster
-        //          otherwise, add one to the other's list
-        //          if both had a list, merge smaller list into the bigger one
-        //      loop i
-        //          dists[i][min_2] = -1
+        public Prototype(int[] data, int id)
+        {
+            this.data = new ArrayList<Integer[]>();
+            Integer[] dataNew = new Integer[data.length];
+            for(int i = 0; i < data.length; ++i)
+            {
+                dataNew[i] = data[i];
+            }
+            this.data.add(dataNew);
+            cluster = new ArrayList<Integer>();
+            this.id = id;
+            cluster.add(id);
+        }
         
-        // Ex: For win/loss clusters, do the above with appropriate stats
-        // for m = 2 clusters
+        public ArrayList<Integer> getCluster()
+        {
+            return cluster;
+        }
+        
+        public int getId()
+        {
+            return id;
+        }
+        
+        public ArrayList<Integer[]> getData()
+        {
+            return data;
+        }
+        
+        public double[] getCenter()
+        {
+            double[] center = new double[data.get(0).length];
+            for(int i = 0; i < data.get(0).length; ++i)
+            {
+                double sum = 0.0;
+                for(int j = 0; j < data.size(); ++j)
+                {
+                    sum += data.get(j)[i];
+                }
+                center[i] = sum/data.size();
+            }
+            return center;
+        }
+        
+        public String toString()
+        {
+            //return Format.formatR(getCenter(),3);
+            return null;
+        }
+        
+        public void merge(Prototype p)
+        {
+            ArrayList<Integer[]> newData = p.getData();
+            
+            for(int i = 0; i < newData.size(); ++i)
+            {
+                data.add(newData.get(i));
+            }
+            ArrayList<Integer> old = p.getCluster();
+            for(int i = 0; i < old.size(); ++i)
+            {
+                cluster.add(old.get(i));
+            }
+        }
     }
+    
+    public static Prototype[] removeItem(Prototype[] a, int n)
+    {
+        Prototype[] newArr = new Prototype[a.length-1];
+        for(int i = 0; i < n; ++i)
+        {
+            newArr[i] = a[i];
+        }
+        for(int i = n; i < newArr.length; ++i)
+        {
+            newArr[i] = a[i+1];
+        }
+        return newArr;
+    }
+
+	@Override
+	public Tuple<Double, Double> simulate(Game game, int round) {
+        double aTvalue = 0;
+        double bTvalue = 0;
+        try {
+			Team a = game.getA();
+			Team b = game.getB();
+			TeamStat tsa = Link.getTeamStat(a, season);
+			TeamStat tsb = Link.getTeamStat(b, season);
+			// TODO possible make this more generic, not have double be the
+			// return type.
+			aTvalue = 0;
+			bTvalue = 0;
+			Object aValue = aggloValue.invoke(tsa, new Object[] {});
+			Object bValue = aggloValue.invoke(tsb, new Object[] {});
+			if (aValue instanceof Integer) {
+				aTvalue = ((Integer) aValue).doubleValue();
+				bTvalue = ((Integer) bValue).doubleValue();
+			} else if (aValue instanceof Double) {
+				aTvalue = ((Double) aValue).doubleValue();
+				bTvalue = ((Double) bValue).doubleValue();
+			}
+        }
+        catch (Exception e) {
+                e.printStackTrace();
+        }
+        return new Tuple<Double, Double>(aTvalue, bTvalue);
+	}
+
+    /**
+     * Agglomeration algorithm
+     *
+     * @param p Prototypes
+     * @param numClusters Number of clusters at end of algorithm
+     */
+    public void agglomerate(Prototype[] p, int numClusters)
+    {
+        // Distances betwen clusters
+        double[][] dists = new double[p.length][p.length];
+        for(int i = 0; i < dists.length; ++i)
+        {
+            dists[i][i] = Double.MAX_VALUE;
+        }
+        
+        // Minimum found on each iteration
+        double min = Double.MAX_VALUE;
+        int iMin = -1;
+        int jMin = -1;
+        
+        // core algorithm
+        for(int k = dists.length; k > 3; k--)
+        {
+            for(int i = 1; i < dists.length; ++i)
+            {
+                for(int j = 0; j < i; ++j)
+                {
+                    // Get centers and find distances
+                    double[] c1 = p[i].getCenter();
+                    double[] c2 = p[j].getCenter();
+                    dists[i][j] = euclidean(c1, c2);
+                    dists[j][i] = dists[i][j];
+                    
+                    // Add minimum distance
+                    if(dists[i][j] < min)
+                    {
+                        min = dists[i][j];
+                        iMin = i;
+                        jMin = j;
+                    }
+                }
+            }
+            
+            // Merge two closest clusters and remove the second one
+            merge(p[iMin], p[jMin]);
+            p = removeItem(p,jMin);
+            dists = ArrayUtils.removeRowCol(dists,jMin);
+            
+            // Reset min for next iteration
+            min = Double.MAX_VALUE;
+        }
+        
+        // Print out clusters
+        for(int i = 0; i < p.length; ++i)
+        {
+            if(p[i] != null)
+            {
+                ArrayList<Integer> cluster = p[i].getCluster();
+                java.util.Collections.sort(cluster);
+                ListUtils.printList(cluster,"Cluster " + (i+1));
+                //ArrayUtils.printArrayF(p[i].getCenter(),2);
+                System.out.println();
+            }
+        }
+    }
+    
+    /**
+     * Merges one prototype into another.
+     *
+     * @param p1 The prototype to hold the merge
+     * @param p2 The merged prototype (is set to null)
+     */
+    public void merge(Prototype p1, Prototype p2)
+    {
+        p1.merge(p2);
+    }
+    
     /**
      * 
      * 
