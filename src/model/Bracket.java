@@ -28,8 +28,8 @@ public class Bracket {
 	 *            should be of length 16 of the teams in the south
 	 */
 	public Bracket(int[] midwest, int[] west, int[] east, int[] south) {
-		if (midwest.length != 16 && west.length != 16 && east.length != 16
-				&& south.length != 16)
+		if (midwest.length != 16 || west.length != 16 || east.length != 16
+				|| south.length != 16)
 			throw new RuntimeException(
 					"All sides of the bracket need to be filled out");
 		Node[] midwestNodes = generateBase(midwest);

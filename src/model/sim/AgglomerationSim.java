@@ -19,31 +19,42 @@ import util.*;
  * @author Nathaniel Cotton
  * @author Ryan Conrad
  */
-public class AgglomerationSim implements GameSimulator {
+public class AgglomerationSim {
 
 	private String season;
 	private Method aggloValue;
+    private ArrayList<Double>[] teamStatNums;
+    private Prototype[] p;
 
+    @SuppressWarnings("unchecked")
 	public AgglomerationSim() {
-	}
-
-	public AgglomerationSim(String season, Method aggloValue) {
+    
 		this.season = season;
 		this.aggloValue = aggloValue;
+        this.teamStatNums = (ArrayList<Double>[])new ArrayList[68];
+        for(int i = 0; i < teamStatNums.length; ++i)
+        {
+            teamStatNums[i] = new ArrayList<Double>(32);
+        }
+        this.p = new Prototype[68];
 	}
-    
-    
     
     public class Prototype
     {
-        ArrayList<Integer[]> data;
+        ArrayList<Double[]> data;
         ArrayList<Integer> cluster;
         int id;
         
-        public Prototype(int[] data, int id)
+        public Prototype(Double[] data, int id)
         {
-            this.data = new ArrayList<Integer[]>();
-            Integer[] dataNew = new Integer[data.length];
+            this.data.add(data);
+            this.id = id;
+        }
+        
+        public Prototype(double[] data, int id)
+        {
+            this.data = new ArrayList<Double[]>();
+            Double[] dataNew = new Double[data.length];
             for(int i = 0; i < data.length; ++i)
             {
                 dataNew[i] = data[i];
@@ -64,7 +75,7 @@ public class AgglomerationSim implements GameSimulator {
             return id;
         }
         
-        public ArrayList<Integer[]> getData()
+        public ArrayList<Double[]> getData()
         {
             return data;
         }
@@ -92,7 +103,7 @@ public class AgglomerationSim implements GameSimulator {
         
         public void merge(Prototype p)
         {
-            ArrayList<Integer[]> newData = p.getData();
+            ArrayList<Double[]> newData = p.getData();
             
             for(int i = 0; i < newData.size(); ++i)
             {
@@ -120,34 +131,28 @@ public class AgglomerationSim implements GameSimulator {
         return newArr;
     }
 
-	@Override
-	public Tuple<Double, Double> simulate(Game game, int round) {
-        double aTvalue = 0;
-        double bTvalue = 0;
-        try {
-			Team a = game.getA();
-			Team b = game.getB();
-			TeamStat tsa = Link.getTeamStat(a, season);
-			TeamStat tsb = Link.getTeamStat(b, season);
-			// TODO possible make this more generic, not have double be the
-			// return type.
-			aTvalue = 0;
-			bTvalue = 0;
-			Object aValue = aggloValue.invoke(tsa, new Object[] {});
-			Object bValue = aggloValue.invoke(tsb, new Object[] {});
-			if (aValue instanceof Integer) {
-				aTvalue = ((Integer) aValue).doubleValue();
-				bTvalue = ((Integer) bValue).doubleValue();
-			} else if (aValue instanceof Double) {
-				aTvalue = ((Double) aValue).doubleValue();
-				bTvalue = ((Double) bValue).doubleValue();
-			}
-        }
-        catch (Exception e) {
-                e.printStackTrace();
-        }
-        return new Tuple<Double, Double>(aTvalue, bTvalue);
+	public void addData(double i, int row, int col) {
+        teamStatNums[row].add(i);
 	}
+    
+    public void initProtos()
+    {
+        for(int i = 0; i < teamStatNums.length; ++i)
+        {
+            for(int j = 0; j < teamStatNums[0].size(); ++j)
+            {
+                System.out.print(teamStatNums[i].get(j) + " ");
+            }
+            System.out.println(teamStatNums[i].size());
+        }
+        for(int i = 0; i < p.length; ++i)
+        {
+            p[i] = new Prototype(
+                teamStatNums[i].toArray(
+                    new Double[teamStatNums[i].size()]),
+                i);
+        }
+    }
 
     /**
      * Agglomeration algorithm
@@ -155,7 +160,7 @@ public class AgglomerationSim implements GameSimulator {
      * @param p Prototypes
      * @param numClusters Number of clusters at end of algorithm
      */
-    public void agglomerate(Prototype[] p, int numClusters)
+    public void agglomerate(int numClusters)
     {
         // Distances betwen clusters
         double[][] dists = new double[p.length][p.length];
