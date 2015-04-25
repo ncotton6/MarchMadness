@@ -173,9 +173,13 @@ public class TeamStat {
 	/**
 	 * @return the numLoses
 	 */
-	@Attribute
 	public int getNumLoses() {
 		return numLoses;
+	}
+
+	@Attribute
+	public int getReverseNumLoses() {
+		return -numLoses;
 	}
 
 	/**
@@ -414,9 +418,13 @@ public class TeamStat {
 	/**
 	 * @return the to
 	 */
-	@Attribute
 	public double getTo() {
 		return to;
+	}
+	
+	@Attribute
+	public double getReverseTo(){
+		return -to;
 	}
 
 	/**
@@ -462,9 +470,13 @@ public class TeamStat {
 	/**
 	 * @return the pf
 	 */
-	@Attribute
 	public double getPf() {
 		return pf;
+	}
+	
+	@Attribute
+	public double getReversePf(){
+		return -pf;
 	}
 
 	/**

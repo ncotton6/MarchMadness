@@ -65,10 +65,12 @@ public class NaiveBayesSim implements GameSimulator {
 						// set winner values
 						statFields[i].set(winnerMean, ss.getMean());
 						statFields[i].set(winnerStd, ss.getStandardDeviation());
-						/*System.out.println("winner " + statFields[i].getName()
-								+ " " + ss.getMean() + " "
-								+ ss.getGeometricMean() + " "
-								+ ss.getStandardDeviation());*/
+						/*
+						 * System.out.println("winner " +
+						 * statFields[i].getName() + " " + ss.getMean() + " " +
+						 * ss.getGeometricMean() + " " +
+						 * ss.getStandardDeviation());
+						 */
 						ss.clear();
 						for (Stat s : losers) {
 							ss.addValue(statFields[i].getDouble(s));
@@ -76,10 +78,11 @@ public class NaiveBayesSim implements GameSimulator {
 						// set loser values
 						statFields[i].set(loserMean, ss.getMean());
 						statFields[i].set(loserStd, ss.getStandardDeviation());
-						/*System.out.println("loser " + statFields[i].getName()
-								+ " " + ss.getMean() + " "
-								+ ss.getGeometricMean() + " "
-								+ ss.getStandardDeviation());*/
+						/*
+						 * System.out.println("loser " + statFields[i].getName()
+						 * + " " + ss.getMean() + " " + ss.getGeometricMean() +
+						 * " " + ss.getStandardDeviation());
+						 */
 
 					}
 				}
@@ -131,12 +134,14 @@ public class NaiveBayesSim implements GameSimulator {
 			statFields[i].setAccessible(true);
 			Field f = TeamStat.class.getDeclaredField(statFields[i].getName());
 			f.setAccessible(true);
-			prob *= (1 / Math.sqrt(2 * Math.PI
+			double value = (1 / Math.sqrt(2 * Math.PI
 					* Math.pow(statFields[i].getDouble(std), 2)))
 					* Math.pow(Math.E,
 							(-Math.pow((f.getDouble(team) - statFields[i]
 									.getDouble(mean)), 2) / (2 * statFields[i]
 									.getDouble(std))));
+			System.out.println(value + " " + f.getName());
+			prob *= value;
 		}
 		return prob;
 	}

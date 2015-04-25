@@ -73,7 +73,7 @@ public class Bracket {
 	 * @return
 	 */
 	public double compare(Bracket b) {
-		return (double) compareHelper(this.winner, b.getWinner()) / 63;
+		return (double) compareHelper(this.winner, b.getWinner());
 	}
 
 	/**
