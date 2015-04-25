@@ -5,8 +5,10 @@ import java.util.HashMap;
 
 import model.Attribute;
 import model.Bracket;
+import model.Link;
 import model.data.Loader;
 import model.data.SeasonDetail;
+import model.data.Team;
 import model.data.TeamStat;
 import model.sim.ActualSim;
 import model.sim.NaiveBayesSim;
@@ -65,7 +67,7 @@ public class Madness {
 		}
 		System.out.println("Average correct predications with random guessing "
 				+ (value / 10000));
-
+        
 		HashMap<Method, ArrayList<Double>> data = new HashMap<Method, ArrayList<Double>>();
 		for (SeasonDetail sd : Loader.seasonDetail) {
 			try {
@@ -77,20 +79,50 @@ public class Madness {
 				test.solve(nbs);
 				System.out.println(sd.getSeason());
 				System.out.println("Naive Bayes " + sd.getSeason() + " "  + actual.compare(test));
+                
+                AgglomerationSim agg = new AgglomerationSim();
+                
+                int col = 0;
 				for (Method m : TeamStat.class.getDeclaredMethods()) {
 					if (m.getAnnotation(Attribute.class) != null) {
 						OneR r = new OneR(sd.getSeason(), m);
-                        AgglomerationSim agg = new AgglomerationSim(
-                            sd.getSeason(), m);
                         // season object is not of type Season
 						Bracket season = Bracket.season(sd.getSeason());
 						season.solve(r);
-                        season.solve(agg);
 						if (!data.containsKey(m))
 							data.put(m, new ArrayList<Double>());
 						data.get(m).add(actual.compare(season));
+                        
+                        int row = 0;
+                        int[][] seeding = Link.getBracketSeeding(sd.getSeason());
+                        Team[] teams = new Team[seeding.length*seeding[0].length];
+                        for(int x = 0; x < seeding.length; ++x)
+                        {
+                            for(int y = 0; y < seeding[0].length; ++y)
+                            {
+                                teams[x*seeding[0].length + y] = 
+                                    Link.lookupTeam(seeding[x][y]);
+                            }
+                        }
+                        for (Team t : teams) {
+                            TeamStat ts = Link.getTeamStat(t, sd.getSeason());
+                            Object aValue = m.invoke(ts, new Object[] {});
+                            double aTvalue = 0.0;
+                            if (aValue instanceof Integer) {
+                                aTvalue = ((Integer) aValue).doubleValue();
+                            } else if (aValue instanceof Double) {
+                                aTvalue = ((Double) aValue).doubleValue();
+                            }
+                            agg.addData(aTvalue, row, col);
+                            row++;
+                        }
+                        col++;
 					}
 				}
+                agg.initProtos();
+                agg.agglomerate(2);
+                System.out.println("Success");
+                //agg.printClusters();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
