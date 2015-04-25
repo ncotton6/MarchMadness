@@ -20,6 +20,58 @@ public class ArrayUtils
     private ArrayUtils(){} // Prevent instantiation
     
     /**
+     * Remove row n and col n from array a. Allocates space
+     * for a new array which is returned. a is not modified.
+     */
+    public static double[][] removeRowCol(double[][] a, int n)
+    {
+        double[][] newArr = new double[a.length-1][a.length-1];
+        for(int i = 0; i < n; ++i)
+        {
+            for(int j = 0; j < n; ++j)
+            {
+                newArr[i][j] = a[i][j];
+            }
+        }
+        for(int i = 0; i < n; ++i)
+        {
+            for(int j = n; j < newArr.length; ++j)
+            {
+                newArr[i][j] = a[i][j+1];
+            }
+        }
+        for(int i = n; i < newArr.length; ++i)
+        {
+            for(int j = 0; j < n; ++j)
+            {
+                newArr[i][j] = a[i+1][j];
+            }
+        }
+        for(int i = n; i < newArr.length; ++i)
+        {
+            for(int j = n; j < newArr.length; ++j)
+            {
+                newArr[i][j] = a[i+1][j+1];
+            }
+        }
+        return newArr;
+    }
+    
+    public static String[] removeItem(String[] a, int n)
+    {
+        String[] newArr = new String[a.length-1];
+        for(int i = 0; i < n; ++i)
+        {
+            newArr[i] = a[i];
+        }
+        for(int i = n; i < newArr.length; ++i)
+        {
+            newArr[i] = a[i+1];
+        }
+        return newArr;
+    }
+    
+    /**
      * Method that returns a subarray based on the start and end indices.
      * 0 to array.length-1 are the standard indices of the array, and
      * -1 to -array.length represent the number of elements away from
