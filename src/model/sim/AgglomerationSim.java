@@ -31,12 +31,12 @@ public class AgglomerationSim {
     
 		this.season = season;
 		this.aggloValue = aggloValue;
-        this.teamStatNums = (ArrayList<Double>[])new ArrayList[68];
+        this.teamStatNums = (ArrayList<Double>[])new ArrayList[64];
         for(int i = 0; i < teamStatNums.length; ++i)
         {
             teamStatNums[i] = new ArrayList<Double>(32);
         }
-        this.p = new Prototype[68];
+        this.p = new Prototype[64];
 	}
     
     public class Prototype
@@ -47,8 +47,11 @@ public class AgglomerationSim {
         
         public Prototype(Double[] data, int id)
         {
+            this.data = new ArrayList<Double[]>();
             this.data.add(data);
+            cluster = new ArrayList<Integer>();
             this.id = id;
+            cluster.add(id);
         }
         
         public Prototype(double[] data, int id)
@@ -115,6 +118,15 @@ public class AgglomerationSim {
                 cluster.add(old.get(i));
             }
         }
+        
+        public void printCluster()
+        {
+            for(int i = 0; i < cluster.size()-1; ++i)
+            {
+                System.out.print(cluster.get(i) + ", ");
+            }
+            System.out.println(cluster.get(cluster.size()-1));
+        }
     }
     
     public static Prototype[] removeItem(Prototype[] a, int n)
@@ -137,14 +149,6 @@ public class AgglomerationSim {
     
     public void initProtos()
     {
-        for(int i = 0; i < teamStatNums.length; ++i)
-        {
-            for(int j = 0; j < teamStatNums[0].size(); ++j)
-            {
-                System.out.print(teamStatNums[i].get(j) + " ");
-            }
-            System.out.println(teamStatNums[i].size());
-        }
         for(int i = 0; i < p.length; ++i)
         {
             p[i] = new Prototype(
@@ -175,7 +179,7 @@ public class AgglomerationSim {
         int jMin = -1;
         
         // core algorithm
-        for(int k = dists.length; k > 3; k--)
+        for(int k = dists.length; k > numClusters; k--)
         {
             for(int i = 1; i < dists.length; ++i)
             {
@@ -229,6 +233,15 @@ public class AgglomerationSim {
     public void merge(Prototype p1, Prototype p2)
     {
         p1.merge(p2);
+    }
+    
+    public void printClusters()
+    {
+        for(int i = 0; i < p.length; ++i)
+        {
+            p[i].printCluster();
+        }
+        System.out.println();
     }
     
     /**

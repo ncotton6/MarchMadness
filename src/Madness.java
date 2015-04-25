@@ -67,8 +67,6 @@ public class Madness {
 		}
 		System.out.println("Average correct predications with random guessing "
 				+ (value / 10000));
-
-        AgglomerationSim agg = new AgglomerationSim();
         
 		HashMap<Method, ArrayList<Double>> data = new HashMap<Method, ArrayList<Double>>();
 		for (SeasonDetail sd : Loader.seasonDetail) {
@@ -77,6 +75,8 @@ public class Madness {
 				Bracket actual = Bracket.season(sd.getSeason());
 				as = new ActualSim(sd.getSeason());
 				actual.solve(as);
+                
+                AgglomerationSim agg = new AgglomerationSim();
                 
                 int col = 0;
 				for (Method m : TeamStat.class.getDeclaredMethods()) {
@@ -90,7 +90,17 @@ public class Madness {
 						data.get(m).add(actual.compare(season));
                         
                         int row = 0;
-                        for (Team t : Loader.teams) {
+                        int[][] seeding = Link.getBracketSeeding(sd.getSeason());
+                        Team[] teams = new Team[seeding.length*seeding[0].length];
+                        for(int x = 0; x < seeding.length; ++x)
+                        {
+                            for(int y = 0; y < seeding[0].length; ++y)
+                            {
+                                teams[x*seeding[0].length + y] = 
+                                    Link.lookupTeam(seeding[x][y]);
+                            }
+                        }
+                        for (Team t : teams) {
                             TeamStat ts = Link.getTeamStat(t, sd.getSeason());
                             Object aValue = m.invoke(ts, new Object[] {});
                             double aTvalue = 0.0;
@@ -107,6 +117,8 @@ public class Madness {
 				}
                 agg.initProtos();
                 agg.agglomerate(2);
+                System.out.println("Success");
+                //agg.printClusters();
 			} catch (Exception e) {
 			}
 		}
