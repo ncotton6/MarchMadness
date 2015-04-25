@@ -294,6 +294,8 @@ public class Link {
 			for (int i = 0; i < seasonFields.length; ++i) {
 				if (seasonFields[i].getAnnotation(FieldAttribute.class) != null) {
 					if (seasonFields[i].getName().startsWith("w")) {
+						System.out.println(seasonFields[i].getName() + " s  "
+								+ seasonToStat.get(seasonFields[i]).getName());
 						seasonToStat.get(seasonFields[i]).set(statWinner,
 								seasonFields[i].get(r));
 					} else {

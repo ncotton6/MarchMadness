@@ -140,7 +140,6 @@ public class NaiveBayesSim implements GameSimulator {
 							(-Math.pow((f.getDouble(team) - statFields[i]
 									.getDouble(mean)), 2) / (2 * statFields[i]
 									.getDouble(std))));
-			System.out.println(value + " " + f.getName());
 			prob *= value;
 		}
 		return prob;
