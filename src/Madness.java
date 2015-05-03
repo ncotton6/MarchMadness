@@ -3,6 +3,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.io.PrintWriter;
+import java.io.File;
 
 import model.Attribute;
 import model.Bracket;
@@ -69,6 +71,20 @@ public class Madness {
 				+ (value / 10000));
         
 		HashMap<Method, ArrayList<Double>> data = new HashMap<Method, ArrayList<Double>>();
+        
+        // Create new file for agglomeration simulator output
+        try
+        {
+            PrintWriter pw = new PrintWriter(new File("AgglomerationResults.txt"));
+            pw.println("Results:");
+            pw.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println("The compiler shouldn't assert that I need to catch these exceptions.");
+            System.exit(99999);
+        }
+        
 		for (SeasonDetail sd : Loader.seasonDetail) {
 			System.out.println(sd.getSeason());
 			try {
@@ -76,7 +92,7 @@ public class Madness {
 				as = new ActualSim(sd.getSeason());
 				actual.solve(as);
                 
-                AgglomerationSim agg = new AgglomerationSim();
+                AgglomerationSim agg = new AgglomerationSim(sd.getSeason(), 2);
                 
                 int col = 0;
 				for (Method m : TeamStat.class.getDeclaredMethods()) {
@@ -100,19 +116,24 @@ public class Madness {
                                     Link.lookupTeam(seeding[x][y]);
                             }
                         }
-                        for (Team t : teams) {
-                            TeamStat ts = Link.getTeamStat(t, sd.getSeason());
-                            Object aValue = m.invoke(ts, new Object[] {});
-                            double aTvalue = 0.0;
-                            if (aValue instanceof Integer) {
-                                aTvalue = ((Integer) aValue).doubleValue();
-                            } else if (aValue instanceof Double) {
-                                aTvalue = ((Double) aValue).doubleValue();
+                        if(m.getName().contains("Win"))
+                        {
+                            agg.addStat(m.getName());
+                            for (Team t : teams) {
+                                TeamStat ts = Link.getTeamStat(t, sd.getSeason());
+                                Object aValue = m.invoke(ts, new Object[] {});
+                                double aTvalue = 0.0;
+                                if (aValue instanceof Integer) {
+                                    aTvalue = ((Integer) aValue).doubleValue();
+                                } else if (aValue instanceof Double) {
+                                    aTvalue = ((Double) aValue).doubleValue();
+                                }
+                                agg.addData(aTvalue, row, col);
+                                agg.addTeam(t.getName(), row);
+                                row++;
                             }
-                            agg.addData(aTvalue, row, col);
-                            row++;
+                            col++;
                         }
-                        col++;
 					}
 				}
                 agg.initProtos();

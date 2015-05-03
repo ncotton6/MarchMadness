@@ -1,0 +1,79 @@
+Results:
+
+2003:
+
+Cluster 1: Kentucky
+Avg getWinStreak: 23.0
+St. Dev getWinStreak: 0.0
+Avg getNumWins: 29.0
+St. Dev getNumWins: 0.0
+Cluster 2: Oklahoma, Wake Forest, Syracuse, Louisville, Mississippi St, Oklahoma St, St Joseph's PA, California, NC State, Auburn, Penn, Butler, Austin Peay, Manhattan, ETSU, S Carolina St, Texas, Florida, Xavier, Stanford, Connecticut, Maryland, Michigan St, LSU, Purdue, Colorado, UNC Wilmington, BYU, San Diego, Troy, Sam Houston St, UNC Asheville, Pittsburgh, Marquette, Dayton, Wisconsin, Missouri, Indiana, Oregon, Utah, Alabama, S Illinois, Weber St, Tulsa, Holy Cross, Wagner, IUPUI, Arizona, Kansas, Duke, Illinois, Notre Dame, Creighton, Memphis, Cincinnati, Gonzaga, Arizona St, C Michigan, WI Milwaukee, W Kentucky, Colorado St, Utah St, Vermont
+Avg getWinStreak: 8.53968253968254
+St. Dev getWinStreak: 10.629377676996723
+Avg getNumWins: 21.73015873015873
+St. Dev getNumWins: 7.75258251448728
+
+2005:
+
+Cluster 1: Illinois
+Avg getWinStreak: 29.0
+St. Dev getWinStreak: 0.0
+Avg getNumWins: 32.0
+St. Dev getNumWins: 0.0
+Cluster 2: Washington, Wake Forest, Gonzaga, Louisville, Georgia Tech, Texas Tech, West Virginia, Pacific, Pittsburgh, Creighton, UCLA, G Washington, ULL, Winthrop, Chattanooga, Montana, Oklahoma St, Arizona, Boston College, Alabama, LSU, S Illinois, Texas, Nevada, St Mary's CA, UAB, WI Milwaukee, Penn, Utah St, SE Louisiana, F Dickinson, Duke, Kentucky, Oklahoma, Syracuse, Michigan St, Utah, Cincinnati, Stanford, Mississippi St, Iowa, UTEP, Old Dominion, Vermont, Niagara, E Kentucky, Delaware St, North Carolina, Connecticut, Kansas, Florida, Villanova, Wisconsin, Charlotte, Minnesota, Iowa St, NC State, Northern Iowa, New Mexico, Ohio, Bucknell, UCF, Oakland
+Avg getWinStreak: 8.936507936507937
+St. Dev getWinStreak: 13.868984630889392
+Avg getNumWins: 22.0
+St. Dev getNumWins: 9.523809523809524
+
+2006:
+
+Cluster 1: Duke, G Washington, Memphis, Gonzaga, Pittsburgh, Florida, Nevada, Illinois
+Avg getWinStreak: 16.125
+St. Dev getWinStreak: 2.109375
+Avg getNumWins: 26.875
+St. Dev getNumWins: 4.109375
+Cluster 2: Texas, Iowa, LSU, Syracuse, West Virginia, California, UNC Wilmington, NC State, S Illinois, Texas A&M, Iona, Northwestern LA, Penn, Southern Univ, UCLA, Kansas, Indiana, Marquette, Arkansas, Bucknell, Alabama, San Diego St, Kent, Bradley, Xavier, Belmont, Oral Roberts, Villanova, Ohio St, Boston College, Oklahoma, Georgetown, Arizona, Wisconsin, Northern Iowa, WI Milwaukee, Montana, Pacific, South Alabama, Davidson, Monmouth NJ, Connecticut, Tennessee, North Carolina, Washington, Michigan St, Wichita St, Kentucky, UAB, Seton Hall, George Mason, Utah St, Air Force, Murray St, Winthrop, Albany NY
+Avg getWinStreak: 7.535714285714286
+St. Dev getWinStreak: 5.213010204081634
+Avg getNumWins: 21.696428571428573
+St. Dev getNumWins: 5.889987244897958
+
+2007:
+
+Cluster 1: Ohio St, Memphis, Florida, Wisconsin, Winthrop
+Avg getWinStreak: 18.2
+St. Dev getWinStreak: 3.7600000000000002
+Avg getNumWins: 28.4
+St. Dev getNumWins: 5.040000000000001
+Cluster 2: North Carolina, Georgetown, Washington St, Texas, USC, Vanderbilt, Boston College, Marquette, Michigan St, Texas Tech, G Washington, Arkansas, New Mexico St, Oral Roberts, Belmont, E Kentucky, Texas A&M, Virginia, Tennessee, Louisville, Nevada, BYU, Xavier, Creighton, Stanford, Long Beach St, Albany NY, Penn, North Texas, Central Conn, Oregon, Maryland, Butler, Notre Dame, UNLV, Arizona, Purdue, Georgia Tech, Old Dominion, Davidson, Miami OH, TAM C. Christi, Jackson St, Kansas, UCLA, Pittsburgh, S Illinois, Virginia Tech, Duke, Indiana, Kentucky, Villanova, Gonzaga, VA Commonwealth, Illinois, Holy Cross, Wright St, Weber St, Niagara
+Avg getWinStreak: 8.322033898305085
+St. Dev getWinStreak: 7.642056880206834
+Avg getNumWins: 22.8135593220339
+St. Dev getNumWins: 7.405917839701236
+
+2008:
+
+Cluster 1: North Carolina, Kansas, Vanderbilt, Davidson, Memphis, Drake
+Avg getWinStreak: 20.166666666666668
+St. Dev getWinStreak: 10.13888888888889
+Avg getNumWins: 28.666666666666668
+St. Dev getNumWins: 9.888888888888891
+Cluster 2: Tennessee, Louisville, Washington St, Notre Dame, Oklahoma, Butler, Indiana, Arkansas, South Alabama, St Joseph's PA, George Mason, Winthrop, Boise St, American Univ, Mt St Mary's, Georgetown, Wisconsin, Clemson, USC, Gonzaga, UNLV, Kent, Kansas St, Villanova, Siena, CS Fullerton, UMBC, Portland St, Texas, Stanford, Pittsburgh, Michigan St, Marquette, Miami FL, Mississippi St, Oregon, St Mary's CA, Kentucky, Temple, Oral Roberts, Cornell, Austin Peay, UT Arlington, UCLA, Duke, Xavier, Connecticut, Purdue, West Virginia, BYU, Texas A&M, Arizona, Baylor, W Kentucky, San Diego, Georgia, Belmont, MS Valley St
+Avg getWinStreak: 8.224137931034482
+St. Dev getWinStreak: 7.449762187871583
+Avg getNumWins: 23.017241379310345
+St. Dev getNumWins: 10.947978596908444
+
+2009:
+
+Cluster 1: Memphis, Utah St
+Avg getWinStreak: 22.0
+St. Dev getWinStreak: 9.0
+Avg getNumWins: 30.0
+St. Dev getNumWins: 1.0
+Cluster 2: Pittsburgh, Duke, Villanova, Xavier, Florida St, UCLA, Texas, Oklahoma St, Tennessee, Minnesota, VA Commonwealth, Wisconsin, Portland St, American Univ, Binghamton, ETSU, North Carolina, Oklahoma, Syracuse, Gonzaga, Illinois, Arizona St, Clemson, LSU, Butler, Michigan, Temple, W Kentucky, Akron, SF Austin, Morgan St, Radford, Louisville, Michigan St, Kansas, Wake Forest, Utah, West Virginia, Boston College, Ohio St, Siena, USC, Dayton, Arizona, Cleveland St, N Dakota St, Robert Morris, Morehead St, Connecticut, Missouri, Washington, Purdue, Marquette, California, BYU, Texas A&M, Maryland, Northern Iowa, Mississippi St, Cornell, CS Northridge, Chattanooga
+Avg getWinStreak: 8.612903225806452
+St. Dev getWinStreak: 7.81789802289282
+Avg getNumWins: 23.14516129032258
+St. Dev getNumWins: 7.866024973985433

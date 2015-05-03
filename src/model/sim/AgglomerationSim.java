@@ -2,12 +2,15 @@ package model.sim;
 
 import java.lang.reflect.Method;
 
+import java.io.*;
+
 import model.Game;
 import model.GameSimulator;
 import model.Link;
 import model.Tuple;
 import model.data.Team;
 import model.data.TeamStat;
+import model.data.Loader;
 
 import java.util.ArrayList;
 import util.*;
@@ -22,16 +25,34 @@ import util.*;
 public class AgglomerationSim {
 
 	private String season;
-	private Method aggloValue;
+	private int aggloValue;
     private ArrayList<Double>[] teamStatNums;
     private Prototype[] p;
+    private ArrayList<String> statNames;
+    private String[] teamNames;
+    
+    private PrintWriter pw;
 
     @SuppressWarnings("unchecked")
-	public AgglomerationSim() {
+	public AgglomerationSim(String season, int aggloValue) {
+        statNames = new ArrayList<String>(6);
+        try
+        {
+            pw = new PrintWriter(new BufferedWriter(new FileWriter("AgglomerationResults.txt", true)));
+            pw.println("");
+            pw.println(season + ":");
+            pw.println("");
+        }
+        catch(Exception e)
+        {
+            System.out.println("The compiler shouldn't assert that I need to catch these exceptions.");
+            System.exit(99999);
+        }
     
 		this.season = season;
 		this.aggloValue = aggloValue;
         this.teamStatNums = (ArrayList<Double>[])new ArrayList[64];
+        this.teamNames = new String[64];
         for(int i = 0; i < teamStatNums.length; ++i)
         {
             teamStatNums[i] = new ArrayList<Double>(32);
@@ -98,6 +119,17 @@ public class AgglomerationSim {
             return center;
         }
         
+        public double deviation(int index)
+        {
+            double mean = getCenter()[index];
+            double sum = 0.0;
+            for(int i = 0; i < data.size(); ++i)
+            {
+                sum += Math.pow(data.get(i)[index]-mean,2);
+            }
+            return sum/data.size();
+        }
+        
         public String toString()
         {
             //return Format.formatR(getCenter(),3);
@@ -146,6 +178,16 @@ public class AgglomerationSim {
 	public void addData(double i, int row, int col) {
         teamStatNums[row].add(i);
 	}
+    
+    public void addStat(String name)
+    {
+        statNames.add(name);
+    }
+    
+    public void addTeam(String teamName, int row)
+    {
+        teamNames[row] = teamName;
+    }
     
     public void initProtos()
     {
@@ -218,10 +260,26 @@ public class AgglomerationSim {
                 ArrayList<Integer> cluster = p[i].getCluster();
                 java.util.Collections.sort(cluster);
                 ListUtils.printList(cluster,"Cluster " + (i+1));
+                
+                System.out.println(Loader.teams.size());
+                
+                pw.print("Cluster " + (i+1) + ": ");
+                for(int j = 0; j < cluster.size()-1; ++j)
+                {
+                    pw.print(teamNames[cluster.get(j)] + ", ");
+                }
+                pw.println(teamNames[cluster.get(cluster.size()-1)]);
+                for(int j = 0; j < statNames.size(); ++j)
+                {
+                    pw.println("Avg " + statNames.get(j) + ": " + p[i].getCenter()[j]);
+                    pw.println("St. Dev " + statNames.get(j) + ": " + p[i].deviation(j));
+                }
+                
                 //ArrayUtils.printArrayF(p[i].getCenter(),2);
                 System.out.println();
             }
         }
+        pw.close();
     }
     
     /**
