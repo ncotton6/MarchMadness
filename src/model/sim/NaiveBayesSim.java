@@ -8,6 +8,7 @@ import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import model.Game;
 import model.GameSimulator;
 import model.Link;
+import model.NaiveBayesAttribute;
 import model.Stat;
 import model.Tuple;
 import model.data.TeamStat;
@@ -56,6 +57,8 @@ public class NaiveBayesSim implements GameSimulator {
 					// value.
 					SummaryStatistics ss = new SummaryStatistics();
 					Field[] statFields = Stat.class.getDeclaredFields();
+					System.out.println("++++++++++++++++++++++++");
+					System.out.println("++++++++++++++++++++++++");
 					for (int i = 0; i < statFields.length; ++i) {
 						statFields[i].setAccessible(true);
 						ss.clear();
@@ -65,12 +68,11 @@ public class NaiveBayesSim implements GameSimulator {
 						// set winner values
 						statFields[i].set(winnerMean, ss.getMean());
 						statFields[i].set(winnerStd, ss.getStandardDeviation());
-						/*
-						 * System.out.println("winner " +
-						 * statFields[i].getName() + " " + ss.getMean() + " " +
-						 * ss.getGeometricMean() + " " +
-						 * ss.getStandardDeviation());
-						 */
+
+						System.out.println("winner " + statFields[i].getName()
+								+ " " + ss.getMean() + " "
+								+ ss.getStandardDeviation());
+
 						ss.clear();
 						for (Stat s : losers) {
 							ss.addValue(statFields[i].getDouble(s));
@@ -78,13 +80,14 @@ public class NaiveBayesSim implements GameSimulator {
 						// set loser values
 						statFields[i].set(loserMean, ss.getMean());
 						statFields[i].set(loserStd, ss.getStandardDeviation());
-						/*
-						 * System.out.println("loser " + statFields[i].getName()
-						 * + " " + ss.getMean() + " " + ss.getGeometricMean() +
-						 * " " + ss.getStandardDeviation());
-						 */
+
+						System.out.println("loser " + statFields[i].getName()
+								+ " " + ss.getMean() + " "
+								+ ss.getStandardDeviation());
 
 					}
+					System.out.println("++++++++++++++++++++++++");
+					System.out.println("++++++++++++++++++++++++");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -96,16 +99,25 @@ public class NaiveBayesSim implements GameSimulator {
 			try {
 				// classify team a as a loser or a winner
 				TeamStat tsa = Link.getTeamStat(game.getA(), season);
-				double aClassifyValue = classify(winnerMean, winnerStd, tsa)
+				double aClassifyValueWinning = classify(winnerMean, winnerStd,
+						tsa)
 						* (((double) tsa.getNumWins()) / (double) (tsa
+								.getNumLoses() + tsa.getNumWins()));
+				double aClassifyValueLosing = classify(loserMean, loserStd, tsa)
+						* (((double) tsa.getNumLoses()) / (double) (tsa
 								.getNumLoses() + tsa.getNumWins()));
 				// classify team b as a loser or a winner
 				TeamStat tsb = Link.getTeamStat(game.getB(), season);
-				double bClassifyValue = classify(winnerMean, winnerStd, tsb)
+				double bClassifyValueWinning = classify(winnerMean, winnerStd,
+						tsb)
 						* (((double) tsb.getNumWins()) / (double) (tsb
 								.getNumLoses() + tsb.getNumWins()));
+				double bClassifyValueLosing = classify(loserMean, loserStd, tsb)
+						* (((double) tsb.getNumLoses()))
+						/ (double) (tsb.getNumLoses() + tsb.getNumWins());
 				// which team is a bigger winner, or less of a loser
-				return new Tuple<Double, Double>(aClassifyValue, bClassifyValue);
+				return new Tuple<Double, Double>(-aClassifyValueLosing,
+						-bClassifyValueLosing);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -131,16 +143,20 @@ public class NaiveBayesSim implements GameSimulator {
 		Field[] statFields = Stat.class.getDeclaredFields();
 		double prob = 1;
 		for (int i = 0; i < statFields.length; ++i) {
-			statFields[i].setAccessible(true);
-			Field f = TeamStat.class.getDeclaredField(statFields[i].getName());
-			f.setAccessible(true);
-			double value = (1 / Math.sqrt(2 * Math.PI
-					* Math.pow(statFields[i].getDouble(std), 2)))
-					* Math.pow(Math.E,
-							(-Math.pow((f.getDouble(team) - statFields[i]
-									.getDouble(mean)), 2) / (2 * statFields[i]
-									.getDouble(std))));
-			prob *= value;
+			if (statFields[i].getAnnotation(NaiveBayesAttribute.class) != null) {
+				statFields[i].setAccessible(true);
+				Field f = TeamStat.class.getDeclaredField(statFields[i]
+						.getName());
+				f.setAccessible(true);
+				double value = (1 / Math.sqrt(2 * Math.PI
+						* Math.pow(statFields[i].getDouble(std), 2)))
+						* Math.pow(
+								Math.E,
+								(-Math.pow((f.getDouble(team) - statFields[i]
+										.getDouble(mean)), 2) / (2 * statFields[i]
+										.getDouble(std))));
+				prob *= value;
+			}
 		}
 		return prob;
 	}

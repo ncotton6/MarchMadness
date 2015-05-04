@@ -9,10 +9,30 @@ package model;
  */
 public class Stat {
 
-	private double fgm, fga, fgm3, fga3, ftm, fta, or, dr, ast, stl, pf; /*
-																		 * ,to,
-																		 * blk;
-																		 */
+	@NaiveBayesAttribute
+	private double fgm;
+	//@NaiveBayesAttribute
+	private double fga;
+	//@NaiveBayesAttribute
+	private double fgm3;
+	//@NaiveBayesAttribute
+	private double fga3;
+	@NaiveBayesAttribute
+	private double ftm;
+	@NaiveBayesAttribute
+	private double fta;
+	//@NaiveBayesAttribute
+	private double or;
+	@NaiveBayesAttribute
+	private double dr;
+	@NaiveBayesAttribute
+	private double ast;
+	//@NaiveBayesAttribute
+	private double stl;
+	//@NaiveBayesAttribute
+	private double pf; /*
+						 * ,to, blk;
+						 */
 
 	/**
 	 * @return the fgm
