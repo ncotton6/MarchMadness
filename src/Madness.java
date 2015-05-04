@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import model.Attribute;
@@ -76,16 +77,17 @@ public class Madness {
 				Bracket test = Bracket.season(sd.getSeason());
 				test.solve(nbs);
 				System.out.println(sd.getSeason());
-				System.out.println("Naive Bayes " + sd.getSeason() + " "  + actual.compare(test));
+				System.out.println("Naive Bayes " + sd.getSeason() + " "
+						+ actual.compare(test));
 				for (Method m : TeamStat.class.getDeclaredMethods()) {
 					if (m.getAnnotation(Attribute.class) != null) {
 						OneR r = new OneR(sd.getSeason(), m);
-                        AgglomerationSim agg = new AgglomerationSim(
-                            sd.getSeason(), m);
-                        // season object is not of type Season
+						// AgglomerationSim agg = new AgglomerationSim(
+						// sd.getSeason(), m);
+						// season object is not of type Season
 						Bracket season = Bracket.season(sd.getSeason());
 						season.solve(r);
-                        season.solve(agg);
+						// season.solve(agg);
 						if (!data.containsKey(m))
 							data.put(m, new ArrayList<Double>());
 						data.get(m).add(actual.compare(season));
@@ -97,9 +99,9 @@ public class Madness {
 		}
 
 		for (Method m : data.keySet()) {
-			// System.out.println(m.getName() + " "
-			// + Arrays.toString(data.get(m).toArray()));
-			//System.out.println(m.getName() + " avg " + avg(data.get(m)));
+			System.out.println(m.getName() + " "
+					+ Arrays.toString(data.get(m).toArray()));
+			System.out.println(m.getName() + " avg " + avg(data.get(m)));
 		}
 
 	}

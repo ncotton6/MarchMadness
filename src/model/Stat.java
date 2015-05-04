@@ -11,25 +11,25 @@ public class Stat {
 
 	@NaiveBayesAttribute
 	private double fgm;
-	//@NaiveBayesAttribute
+	@NaiveBayesAttribute
 	private double fga;
-	//@NaiveBayesAttribute
+	@NaiveBayesAttribute
 	private double fgm3;
-	//@NaiveBayesAttribute
+	@NaiveBayesAttribute
 	private double fga3;
 	@NaiveBayesAttribute
 	private double ftm;
 	@NaiveBayesAttribute
 	private double fta;
-	//@NaiveBayesAttribute
+	@NaiveBayesAttribute
 	private double or;
 	@NaiveBayesAttribute
 	private double dr;
 	@NaiveBayesAttribute
 	private double ast;
-	//@NaiveBayesAttribute
+	@NaiveBayesAttribute
 	private double stl;
-	//@NaiveBayesAttribute
+	@NaiveBayesAttribute
 	private double pf; /*
 						 * ,to, blk;
 						 */
