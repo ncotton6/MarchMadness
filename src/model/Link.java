@@ -43,8 +43,7 @@ public class Link {
 			if (t.getId() == i)
 				return t;
 		}
-		System.out.println("Couldn't find team: " + i);
-		throw new RuntimeException();
+		throw new RuntimeException("Couldn't find team: " + i);
 		// return null;
 	}
 
@@ -262,7 +261,9 @@ public class Link {
 	}
 
 	/**
-	 * Accumulates all the statistics for winners and losers.
+	 * Accumulates all the statistics for winners and losers. {@link Tuple#v1}
+	 * will hold the winner data. While {@link Tuple#v2} will hold the data for
+	 * the losers.
 	 * 
 	 * @return
 	 * @throws IllegalAccessException
@@ -293,12 +294,14 @@ public class Link {
 			// fill out objects
 			for (int i = 0; i < seasonFields.length; ++i) {
 				if (seasonFields[i].getAnnotation(FieldAttribute.class) != null) {
-					if (seasonFields[i].getName().startsWith("w")) {
-						seasonToStat.get(seasonFields[i]).set(statWinner,
-								seasonFields[i].get(r));
-					} else {
-						seasonToStat.get(seasonFields[i]).set(statLoser,
-								seasonFields[i].get(r));
+					if (seasonToStat.get(seasonFields[i]) != null) {
+						if (seasonFields[i].getName().startsWith("w")) {
+							seasonToStat.get(seasonFields[i]).set(statWinner,
+									seasonFields[i].get(r));
+						} else {
+							seasonToStat.get(seasonFields[i]).set(statLoser,
+									seasonFields[i].get(r));
+						}
 					}
 				}
 			}

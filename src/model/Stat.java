@@ -9,8 +9,30 @@ package model;
  */
 public class Stat {
 
-	private double fgm, fga, fgm3, fga3, ftm, fta, or, dr, ast, to, stl, blk,
-			pf;
+	@NaiveBayesAttribute
+	private double fgm;
+	@NaiveBayesAttribute
+	private double fga;
+	@NaiveBayesAttribute
+	private double fgm3;
+	@NaiveBayesAttribute
+	private double fga3;
+	@NaiveBayesAttribute
+	private double ftm;
+	@NaiveBayesAttribute
+	private double fta;
+	@NaiveBayesAttribute
+	private double or;
+	@NaiveBayesAttribute
+	private double dr;
+	@NaiveBayesAttribute
+	private double ast;
+	@NaiveBayesAttribute
+	private double stl;
+	@NaiveBayesAttribute
+	private double pf; /*
+						 * ,to, blk;
+						 */
 
 	/**
 	 * @return the fgm
@@ -150,17 +172,17 @@ public class Stat {
 	/**
 	 * @return the to
 	 */
-	public double getTo() {
-		return to;
-	}
+	/*
+	 * public double getTo() { return to; }
+	 */
 
 	/**
 	 * @param to
 	 *            the to to set
 	 */
-	public void setTo(double to) {
-		this.to = to;
-	}
+	/*
+	 * public void setTo(double to) { this.to = to; }
+	 */
 
 	/**
 	 * @return the stl
@@ -180,17 +202,17 @@ public class Stat {
 	/**
 	 * @return the blk
 	 */
-	public double getBlk() {
-		return blk;
-	}
+	/*
+	 * public double getBlk() { return blk; }
+	 */
 
 	/**
 	 * @param blk
 	 *            the blk to set
 	 */
-	public void setBlk(double blk) {
-		this.blk = blk;
-	}
+	/*
+	 * public void setBlk(double blk) { this.blk = blk; }
+	 */
 
 	/**
 	 * @return the pf

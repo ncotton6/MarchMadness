@@ -31,6 +31,11 @@ public class Loader {
 					+ File.separator + "regular_season_detailed_results.csv"));
 			regularSeason = CSVReader.parse(fis, Season.class);
 			fis.close();
+			FileInputStream fis2015 = new FileInputStream(new File("data"
+					+ File.separator
+					+ "regular_season_detailed_results_2015.csv"));
+			regularSeason.addAll(CSVReader.parse(fis2015, Season.class));
+			fis2015.close();
 		}
 		{
 			// parse season details
@@ -66,6 +71,10 @@ public class Loader {
 					+ File.separator + "tourney_seeds.csv"));
 			seeds = CSVReader.parse(fis, TourneySeed.class);
 			fis.close();
+			FileInputStream fis2015 = new FileInputStream(new File("data"
+					+ File.separator + "tourney_seeds_2015.csv"));
+			seeds.addAll(CSVReader.parse(fis2015, TourneySeed.class));
+			fis2015.close();
 		}
 
 	}

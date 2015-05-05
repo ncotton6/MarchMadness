@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import model.Attribute;
@@ -129,13 +130,19 @@ public class Madness {
 		}
 
 		for (Method m : data.keySet()) {
-			// System.out.println(m.getName() + " "
-			// + Arrays.toString(data.get(m).toArray()));
+			System.out.println(m.getName() + " "
+					+ Arrays.toString(data.get(m).toArray()));
 			System.out.println(m.getName() + " avg " + avg(data.get(m)));
 		}
 
 	}
 
+	/**
+	 * Finds the average of the numbers in the list
+	 * 
+	 * @param arrayList
+	 * @return
+	 */
 	private static double avg(ArrayList<Double> arrayList) {
 		double value = 0;
 		for (double d : arrayList)
