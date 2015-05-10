@@ -10,6 +10,7 @@ import java.util.List;
 import model.data.Loader;
 import model.data.Result;
 import model.data.Season;
+import model.data.SeasonDetail;
 import model.data.Team;
 import model.data.TeamStat;
 import model.data.TourneySeed;
@@ -238,6 +239,7 @@ public class Link {
 		ts.setstl(stl / s.size());
 		ts.setSeed(Link.getSeed(season, team.getId()));
 		ts.setTeam(team.getId());
+		ts.setSeason(season);
 		return ts;
 	}
 
@@ -313,12 +315,27 @@ public class Link {
 	}
 
 	public static List<TeamStat> getSeasonStat(String season) {
+		loadTeamStat();
 		List<TeamStat> teamStats = new ArrayList<TeamStat>();
 		for(TeamStat ts : Loader.teamStat){
 			if(ts.getSeason().equals(season))
 				teamStats.add(ts);
 		}
 		return teamStats;
+	}
+
+	private static void loadTeamStat() {
+		if(Loader.teamStat == null){
+		List<TeamStat> teamStats = new ArrayList<TeamStat>();
+		for(Team t : Loader.teams){
+			for(SeasonDetail s : Loader.seasonDetail){
+				TeamStat ts = getTeamStat(t, s.getSeason());
+				if(ts != null)
+					teamStats.add(ts);
+			}
+		}
+		Loader.teamStat = teamStats;
+		}
 	}
 
 	public static int getRound(int team, String season) {

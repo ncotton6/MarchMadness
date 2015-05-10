@@ -12,6 +12,7 @@ import model.data.SeasonDetail;
 import model.data.Team;
 import model.data.TeamStat;
 import model.sim.ActualSim;
+import model.sim.KNNSim;
 import model.sim.NaiveBayesSim;
 import model.sim.OneR;
 import model.sim.RandomSim;
@@ -80,6 +81,10 @@ public class Madness {
 				test.solve(nbs);
 				System.out.println(sd.getSeason());
 				System.out.println("Naive Bayes " + sd.getSeason() + " "  + actual.compare(test));
+				KNNSim ks = new KNNSim(sd.getSeason());
+				test = Bracket.season(sd.getSeason());
+				test.solve(ks);
+				System.out.println("KNN " + sd.getSeason() + " " + actual.compare(test));
                 
                 AgglomerationSim agg = new AgglomerationSim(TeamStat.class.getDeclaredMethods(), sd.getSeason());
                 

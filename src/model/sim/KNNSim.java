@@ -87,8 +87,16 @@ public class KNNSim implements GameSimulator {
 		for (int i = 0; i < methods.length; ++i) {
 			if (methods[i].getAnnotation(Attribute.class) != null) {
 				try {
-					double valueA = (double) methods[i].invoke(a, null);
-					double valueB = (double) methods[i].invoke(b, null);
+					Object objA = methods[i].invoke(a, null);
+					Object objB = methods[i].invoke(b, null);
+					double valueA = 0, valueB = 0;
+					if(objA instanceof Integer){
+						valueA = ((Integer)objA).doubleValue();
+						valueB = ((Integer)objB).doubleValue();
+					}else if(objA instanceof Double){
+						valueA = (Double)objA;
+						valueB = (Double)objB;
+					}
 					dist += Math.pow(Math.abs(valueA - valueB), distance);
 				} catch (Exception e) {
 					e.printStackTrace();
