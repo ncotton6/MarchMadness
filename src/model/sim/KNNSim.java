@@ -1,56 +1,100 @@
 package model.sim;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+
+import model.Attribute;
 import model.Game;
 import model.GameSimulator;
+import model.KNNAttribute;
+import model.Link;
 import model.Tuple;
+import model.data.Team;
+import model.data.TeamStat;
 
 public class KNNSim implements GameSimulator {
 
-	@Override
-	public Tuple<Double, Double> simulate(Game game, int round) {
-		// TODO Auto-generated method stub
-        
-        // Associate results of season with tournament placement
-        // Idea: associate results of previous tournaments (training set)
-        // 
-        // Find good values of k (3, 5, 7, etc.)
-        // Training set = previous years
-        
-        /*
-        Run knn on a season based on a training set (e.g. tournaments from previous seasons).
-        Classify each team from that season.
-        
-        Each round: Take the team that was classified to go farther.
-        Set a tiebreaking procedure (most likely pick higher seed).
-        Final Four/Championship tiebreakers: pick a stat/set of stats and compare
-        (Same seeds can't face eachother until the final 3 games)
-        */
-        
-		return null;
+	private static final int numSeason = 3, k = 3, distance = 1;
+	private String season = null;
+	private List<TeamStat> statSpace = null;
+
+	public KNNSim(String season) {
+		this.season = season;
 	}
 
-    //
-    // p1 is essentially the unclassified point
-    // p is essentially the training set
-    // k is how many neighbors are desired
-    //
-    /*public void knn(Prototype p1, Prototype[] p, int k)
-    {
-        Protodist[] pd (contains Prototype p[] and double dist[], implements Comparable)
-        for(int i = 0; i < p.length; ++i)
-        {
-            pd.put(p[i], euclidean distance from p[i] to p)
-        }
-        sort(pd) (sort based on dist
-        Prototype[] nn = get first k elements from pd (the k nearest neighbors)
-        
-        // Get the count of each classification from the neighbors. The most frequent
-        // classification is the one that p1 will fall into.
-        int[] counts
-        for(n in nn)
-        {
-            counts[nn.getClassificationAsInt()]++;
-        }
-        p1.classify(indexOfMax(counts))
-    }*/
+	@Override
+	public Tuple<Double, Double> simulate(Game game, int round) {
+		// get past number of seasons
+		if (statSpace == null) {
+			statSpace = new ArrayList<TeamStat>();
+			int tempSeason = Integer.valueOf(season) - 1;
+			for (int i = 0; i < numSeason; ++i) {
+				statSpace.addAll(Link.getSeasonStat(String.valueOf(tempSeason
+						- i)));
+			}
+		}
+		// find K closest points to team A
+		double meanA = mean(points(game.getA()));
+		// find K closest points to team B
+		double meanB = mean(points(game.getB()));
+		// select the greater seed
+		return new Tuple<Double, Double>(meanA, meanB);
+	}
+
+	private double mean(List<Integer> points) {
+		int total = 0;
+		for (Integer i : points) {
+			total += i;
+		}
+		return total / points.size();
+	}
+
+	private List<Integer> points(Team team) {
+		TeamStat teamstat = Link.getTeamStat(team, season);
+		List<Integer> progressions = new ArrayList<Integer>();
+		PriorityQueue<Tuple<Double, TeamStat>> distances = new PriorityQueue<Tuple<Double, TeamStat>>(
+				statSpace.size(), new Comparator<Tuple<Double, TeamStat>>() {
+
+					@Override
+					public int compare(Tuple<Double, TeamStat> o1,
+							Tuple<Double, TeamStat> o2) {
+						return (int) ((o1.v1 * 1000) - (o2.v1 * 1000));
+					}
+				});
+		// fill queue
+		for (TeamStat ts : statSpace) {
+			distances.add(new Tuple<Double, TeamStat>(Distance(ts, teamstat),
+					ts));
+		}
+		// pop off k
+		double twoBack = 0, oneBack = 0;
+		while (progressions.size() < k
+				|| (twoBack == oneBack && progressions.size() >= k)) {
+			Tuple<Double, TeamStat> stat = distances.poll();
+			twoBack = oneBack;
+			oneBack = stat.v1;
+			progressions.add(Link.getRound(stat.v2.getTeam(), season));
+		}
+		return progressions;
+	}
+
+	private Double Distance(TeamStat a, TeamStat b) {
+		Method[] methods = TeamStat.class.getDeclaredMethods();
+		double dist = 0;
+		for (int i = 0; i < methods.length; ++i) {
+			if (methods[i].getAnnotation(Attribute.class) != null) {
+				try {
+					double valueA = (double) methods[i].invoke(a, null);
+					double valueB = (double) methods[i].invoke(b, null);
+					dist += Math.pow(Math.abs(valueA - valueB), distance);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return Math.pow(dist, (1 / (double) distance));
+	}
 }

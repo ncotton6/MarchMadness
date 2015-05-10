@@ -311,4 +311,24 @@ public class Link {
 		}
 		return new Tuple<List<Stat>, List<Stat>>(winner, loser);
 	}
+
+	public static List<TeamStat> getSeasonStat(String season) {
+		List<TeamStat> teamStats = new ArrayList<TeamStat>();
+		for(TeamStat ts : Loader.teamStat){
+			if(ts.getSeason().equals(season))
+				teamStats.add(ts);
+		}
+		return teamStats;
+	}
+
+	public static int getRound(int team, String season) {
+		int round = 0;
+		for(Result r : Loader.results){
+			if(r.getSeason().equals(season)){
+				if(r.getWteam() == team || r.getLteam() == team)
+					++round;
+			}
+		}
+		return round;
+	}
 }
