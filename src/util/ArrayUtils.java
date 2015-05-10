@@ -333,6 +333,25 @@ public class ArrayUtils
         array[i1] = array[i2];
         array[i2] = tmp;
     }
+
+    /**
+     * Method that swaps two double arrays.
+     *
+     * @param array The double array
+     * @param i1 The index of the first object
+     * @param i2 The index of the second object
+     */
+    public static void swap(double[] a1, double[] a2)
+    {
+        if(a1.length != a2.length) return;
+        
+        for(int i = 0; i < a1.length; ++i)
+        {
+            double tmp = a1[i];
+            a1[i] = a2[i];
+            a2[i] = tmp;
+        }
+    }
     
     /**
      * Method that zeros out an array of any non-primitive type

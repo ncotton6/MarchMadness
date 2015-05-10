@@ -81,7 +81,7 @@ public class Madness {
 				System.out.println(sd.getSeason());
 				System.out.println("Naive Bayes " + sd.getSeason() + " "  + actual.compare(test));
                 
-                AgglomerationSim agg = new AgglomerationSim();
+                AgglomerationSim agg = new AgglomerationSim(TeamStat.class.getDeclaredMethods(), sd.getSeason());
                 
                 int col = 0;
 				for (Method m : TeamStat.class.getDeclaredMethods()) {
@@ -120,8 +120,11 @@ public class Madness {
                         col++;
 					}
 				}
+                
                 agg.initProtos();
                 agg.agglomerate(2);
+                test.solve(agg);
+				System.out.println("Agglomeration " + sd.getSeason() + " "  + actual.compare(test));
                 System.out.println("Success");
                 //agg.printClusters();
 			} catch (Exception e) {

@@ -17,28 +17,13 @@ public class KNNSim implements GameSimulator {
         // Training set = previous years
         
         /*
-        An idea for cluster orientation (n = # seasons):
-        32*n - Lost in first round
-        16*n - Lost in round of 32
-        8*n - Lost in sweet sixteen
-        4*n - Lost in elite eight
-        2*n - Lost in final four
-        1*n - Lost in championship game
-        1*n - Won championship game
-        
-        Run knn on a season based on a training set.
+        Run knn on a season based on a training set (e.g. tournaments from previous seasons).
         Classify each team from that season.
         
-        Problem: Too many teams may be classified as the same class
-        (e.g. predicted that 34 teams will lose in the first round)
-        
-        Possible (Naive) Solution: If a class is "full", pick the next best class
-        
-        Better Solution: Knock out team farthest from the center, put the team that
-        better fits the classification in that cluster, and reclassify the knocked-out
-        team.
-        
-        Learning: Find what stats and values of k give best result, and tweak parameters.
+        Each round: Take the team that was classified to go farther.
+        Set a tiebreaking procedure (most likely pick higher seed).
+        Final Four/Championship tiebreakers: pick a stat/set of stats and compare
+        (Same seeds can't face eachother until the final 3 games)
         */
         
 		return null;
