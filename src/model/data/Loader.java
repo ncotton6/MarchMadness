@@ -8,6 +8,8 @@ import java.util.List;
 
 import datareader.CSVReader;
 
+import util.ListUtils;
+
 /**
  * This class will load the data from the CSV files into memory, and give the
  * application access to the data.
@@ -71,9 +73,11 @@ public class Loader {
 					+ File.separator + "tourney_seeds.csv"));
 			seeds = CSVReader.parse(fis, TourneySeed.class);
 			fis.close();
+            
 			FileInputStream fis2015 = new FileInputStream(new File("data"
 					+ File.separator + "tourney_seeds_2015.csv"));
 			seeds.addAll(CSVReader.parse(fis2015, TourneySeed.class));
+            
 			fis2015.close();
 		}
 

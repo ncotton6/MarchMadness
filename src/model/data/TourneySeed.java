@@ -86,4 +86,8 @@ public class TourneySeed {
 	public void setRegion(int region) {
 		this.region = region;
 	}
+    
+    public String toString() {
+        return season + ", Team #" + team + ", #" + seed + " Seed, " + region + " Region.";
+    }
 }

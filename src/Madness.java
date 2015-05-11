@@ -71,15 +71,23 @@ public class Madness {
         
 		HashMap<Method, ArrayList<Double>> data = new HashMap<Method, ArrayList<Double>>();
 		for (SeasonDetail sd : Loader.seasonDetail) {
+            //if(!sd.getSeason().equals("2015")) continue;
 			try {
-				Bracket actual = Bracket.season(sd.getSeason());
-				as = new ActualSim(sd.getSeason());
-				actual.solve(as);
+                Bracket actual = null;
+                if(!sd.getSeason().equals("2015"))
+                {
+                    actual = Bracket.season(sd.getSeason());
+                    as = new ActualSim(sd.getSeason());
+                    actual.solve(as);
+                }
 				NaiveBayesSim nbs = new NaiveBayesSim(sd.getSeason());
 				Bracket test = Bracket.season(sd.getSeason());
 				test.solve(nbs);
 				System.out.println(sd.getSeason());
-				System.out.println("Naive Bayes " + sd.getSeason() + " "  + actual.compare(test));
+                if(actual != null)
+                {
+                    System.out.println("Naive Bayes " + sd.getSeason() + " "  + actual.compare(test));
+                }
                 
                 AgglomerationSim agg = new AgglomerationSim(TeamStat.class.getDeclaredMethods(), sd.getSeason());
                 
@@ -92,7 +100,8 @@ public class Madness {
 						season.solve(r);
 						if (!data.containsKey(m))
 							data.put(m, new ArrayList<Double>());
-						data.get(m).add(actual.compare(season));
+                        if(actual != null)
+                            data.get(m).add(actual.compare(season));
                         
                         int row = 0;
                         int[][] seeding = Link.getBracketSeeding(sd.getSeason());
@@ -124,7 +133,14 @@ public class Madness {
                 agg.initProtos();
                 agg.agglomerate(2);
                 test.solve(agg);
-				System.out.println("Agglomeration " + sd.getSeason() + " "  + actual.compare(test));
+                if(actual != null)
+                {
+                    System.out.println("Agglomeration " + sd.getSeason() + " "  + actual.compare(test));
+                }
+                else
+                {
+                    //test.printResults();
+                }
                 System.out.println("Success");
                 //agg.printClusters();
 			} catch (Exception e) {

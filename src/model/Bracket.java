@@ -189,6 +189,25 @@ public class Bracket {
 		return new Bracket(bracketSeeding[0], bracketSeeding[1],
 				bracketSeeding[2], bracketSeeding[3]);
 	}
+    
+    public void printResults()
+    {
+        System.out.println("Winner: " + getWinner().getWinner().getName());
+        System.out.println();
+        printResultsHelper(getWinner().getChildren()[0]);
+        printResultsHelper(getWinner().getChildren()[1]);
+    }
+    public void printResultsHelper(Node n)
+    {
+        System.out.println("Winner: " + n.getWinner().getName());
+        System.out.println("Loser: " + n.getLoser().getName());
+        System.out.println();
+        if(n.getChildren()[0] != null && n.getChildren()[1] != null)
+        {
+            printResultsHelper(n.getChildren()[0]);
+            printResultsHelper(n.getChildren()[1]);
+        }
+    }
 
 	/**
 	 * This simply class will be used to hold data for progression through the
@@ -213,6 +232,16 @@ public class Bracket {
 		 */
 		public Team getWinner() {
 			return game.getAScore() > game.getBScore() ? game.getA() : game
+					.getB();
+		}
+
+		/**
+		 * Gets the loser of the game
+		 * 
+		 * @return
+		 */
+		public Team getLoser() {
+			return game.getAScore() <= game.getBScore() ? game.getA() : game
 					.getB();
 		}
 
